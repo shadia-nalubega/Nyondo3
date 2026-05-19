@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{% block title %} NYONDOSTOCK HARDWARE {% endblock %}</title>
+
+    <!-- TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="{% static 'account/css/stock.css' %}" />
+  </head>
+
+  <body class="bg-gray-100 font-sans">
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside
+        class="w-72 bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 text-white p-6"
+      >
+        <!-- LOGO -->
+        <div
+          class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100"
+        >
+          <img
+            src="{% static 'account/css/images/NS.png' %}"
+            class="w-44 mx-auto"
+          />
+        </div>
+
+        <hr class="border-purple-400 mb-6" />
+
+        <!-- NAVIGATION -->
+        <h5 class="mb-4 text-lg font-semibold">Dashboard</h5>
+
+        <nav class="flex flex-col gap-2">
+          <a
+            href="{% url 'stock_page' %}"
+            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
+          >
+            STOCK
+          </a>
+
+          <a
+            href="{% url 'track' %}"
+            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
+          >
+            CHECK STOCK
+          </a>
+
+          <a
+            href="{% url 'stock_report' %}"
+            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
+          >
+            REPORT
+          </a>
+
+          <a
+            href="#"
+            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
+          >
+            MY PROFILE
+          </a>
+
+          <a
+            href="{% url 'logout' %}"
+            class="px-4 py-3 rounded-xl hover:bg-red-500/40 transition duration-300"
+          >
+            LOGOUT
+          </a>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 p-6">
+        <!-- TOPBAR -->
+        <div
+          class="bg-white rounded-2xl shadow-md p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8"
+        >
+          <h3 class="text-3xl font-bold">Stock Dashboard</h3>
+
+          <!-- SEARCH -->
+          <form class="flex gap-2">
+            <input
+              type="search"
+              placeholder="Search stock..."
+              class="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
+            <button
+              type="submit"
+              class="bg-purple-800 hover:bg-purple-700 text-white px-5 py-2 rounded-xl transition duration-300"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+
+        <!-- WELCOME -->
+        <h2 class="text-3xl font-bold text-purple-900 mb-6">
+          Welcome To Stock
+        </h2>
+
+        <!-- DASHBOARD CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <!-- CARD 1: Total Stock -->
+          <div
+            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
+          >
+            <h6 class="font-bold text-purple-900">Total Stock</h6>
+            <h3 class="text-3xl font-bold mt-3">{{ total_stock }}</h3>
+            <p class="text-gray-500 mt-2">Total inventory items</p>
+          </div>
+
+          <!-- CARD 2: Today's Stock -->
+          <div
+            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
+          >
+            <h6 class="font-bold text-purple-900">Today's Stock Levels</h6>
+            <h3 class="text-3xl font-bold mt-3">{{ todays_stock }}</h3>
+            <p class="text-gray-500 mt-2">Added/updated today</p>
+          </div>
+
+          <!-- CARD 3: Low Stock Alerts -->
+          <div
+            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
+          >
+            <h6 class="font-bold text-purple-900">Low Stock Alerts</h6>
+            <h3 class="text-3xl font-bold mt-3">{{ low_stock }}</h3>
+            <p class="text-gray-500 mt-2">Items below 10 units</p>
+          </div>
+
+          <!-- CARD 4: Total Value -->
+          <div
+            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
+          >
+            <h6 class="font-bold text-purple-900">Total Value</h6>
+            <h3 class="text-3xl font-bold mt-3">
+              UGX {{ total_value|floatformat:0 }}
+            </h3>
+            <p class="text-gray-500 mt-2">Total inventory worth</p>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS (Separate row) -->
+        <div class="grid grid-cols-1 mb-10">
+          <div
+            class="text-black rounded-2xl shadow-md p-6 bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100"
+          >
+            <h5 class="text-xl font-bold mb-4">Quick Actions</h5>
+            <div class="flex flex-wrap gap-3">
+              <a
+                href="{% url 'stock_reg' %}"
+                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition duration-300"
+              >
+                Register Stock
+              </a>
+              <a
+                href="{% url 'supplier_registration' %}"
+                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition duration-300"
+              >
+                New Supplier
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="bg-white rounded-2xl shadow-md p-6">
+          <!-- TABLE HEADER -->
+          <div
+            class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6"
+          >
+            <h4 class="text-2xl font-bold">Stock Records</h4>
+
+            <a
+              href="{% url 'stock_reg' %}"
+              class="bg-blue-800 hover:bg-purple-700 text-white px-5 py-3 rounded-xl transition duration-300"
+            >
+              + Add Stock
+            </a>
+          </div>
+
+          <!-- TABLE -->
+          <div class="overflow-x-auto">
+            <table
+              class="min-w-full border border-gray-200 rounded-xl overflow-hidden"
+            >
+              <!-- TABLE HEAD -->
+              <thead class="bg-gray-900 text-white">
+                <tr>
+                  <th class="px-4 py-3 text-center">Product ID</th>
+
+                  <th class="px-4 py-3 text-center">Description</th>
+
+                  <th class="px-4 py-3 text-center">Quantity</th>
+
+                  <th class="px-4 py-3 text-center">Unit Price</th>
+
+                  <th class="px-4 py-3 text-center">Supplier Name</th>
+
+                  <th class="px-4 py-3 text-center">Date</th>
+
+                  <th class="px-4 py-3 text-center">Action</th>
+                </tr>
+              </thead>
+
+              <!-- TABLE BODY -->
+              <tbody class="divide-y divide-gray-200 bg-white">
+                {% for stock in stock_items %}
+
+                <tr>
+                  <td class="px-4 py-3 text-center">{{ stock.product_id }}</td>
+
+                  <td class="px-4 py-3 text-center">{{ stock.description }}</td>
+
+                  <td class="px-4 py-3 text-center">{{ stock.quantity }}</td>
+
+                  <td class="px-4 py-3 text-center">{{ stock.cost_price }}</td>
+
+                  <td class="px-4 py-3 text-center">{{ stock.supplier }}</td>
+
+                  <td class="px-4 py-3 text-center">{{ stock.date }}</td>
+
+                  <!-- ACTION BUTTONS -->
+                  <td class="px-4 py-3">
+                    <!-- ACTION BUTTONS - Replace your current buttons with these -->
+
+                    <div class="flex justify-center gap-2">
+                      <!-- VIEW Button -->
+                      <a
+                        href="{% url 'view_stock' stock.id %}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                      >
+                        View
+                      </a>
+
+                      <!-- UPDATE Button -->
+                      <a
+                        href="{% url 'update_stock' stock.id %}"
+                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                      >
+                        Update
+                      </a>
+
+                      <!-- DELETE Button -->
+                      <a
+                        href="{% url 'delete_stock' stock.id %}"
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                      >
+                        Delete
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                  <td colspan="8" class="text-center text-gray-500 py-6">
+                    No stock records found.
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

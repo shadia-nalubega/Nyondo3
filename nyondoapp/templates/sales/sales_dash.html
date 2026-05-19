@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{% block title %} NYONDOSTOCK HARDWARE {% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside
+        class="hidden md:block w-64 bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 min-h-screen"
+      >
+        <!-- LOGO -->
+         <div
+          class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100 mt-4"
+        >
+          <img
+            src="{% static 'account/css/images/NS.png' %}"
+            class="w-44 mx-auto"
+          />
+        </div>
+
+        <!-- NAVIGATION -->
+        <nav class="text-sm text-gray-300 mt-6">
+          <ul class="flex flex-col">
+            <!-- DASHBOARD -->
+            <li class="px-4 bg-gray-700 text-white">
+              <a class="py-3 flex items-center" href="{% url 'sales_page' %}">
+                Dashboard
+              </a>
+            </li>
+
+            <!-- SECTION -->
+            <li
+              class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold"
+            >
+              SALES MANAGEMENT
+            </li>
+
+            <!-- SALES -->
+            <li class="px-4 hover:bg-gray-700">
+              <a class="py-3 flex items-center" href="{% url 'sales_page' %}"> Sales </a>
+            </li>
+
+            <!-- CHECK STOCK -->
+            <li class="px-4 hover:bg-gray-700">
+              <a class="py-3 flex items-center" href="{% url 'track' %}"> Check Stock </a>
+            </li>
+
+            <!-- RECEIPTS -->
+            <li class="px-4 hover:bg-gray-700">
+              <a class="py-3 flex items-center" href=""> Receipts </a>
+            </li>
+
+            <!-- REPORTS -->
+            <li class="px-4 hover:bg-gray-700">
+              <a class="py-3 flex items-center" href="{% url 'sales_report' %}"> Reports </a>
+            </li>
+
+            <!-- PROFILE -->
+            <li class="px-4 hover:bg-gray-700">
+              <a class="py-3 flex items-center" href="#"> My Profile </a>
+            </li>
+
+            <!-- LOGOUT -->
+            <li class="px-4 hover:bg-red-700">
+              <a class="py-3 flex items-center" href="{% url 'logout' %}"> Logout </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1">
+        <!-- TOP NAVBAR -->
+        <nav
+          class="bg-white shadow-sm px-6 py-4 flex justify-between items-center"
+        >
+          <h1 class="text-2xl font-bold text-gray-700">Dashboard</h1>
+
+          <!-- SEARCH -->
+          <form class="flex gap-2">
+            <input
+              type="search"
+              placeholder="Search"
+              class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+            />
+
+            <button
+              type="submit"
+              class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+            >
+              Search
+            </button>
+          </form>
+        </nav>
+
+        <!-- PAGE CONTENT -->
+        <div class="p-6">
+          <!-- WELCOME -->
+          <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-700">Welcome To Sales</h2>
+
+            <p class="text-gray-500 mt-1">
+              Overview of your daily business activities
+            </p>
+          </div>
+
+          <!-- CARDS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- CARD 1: Today's Sales -->
+    <div class="bg-white rounded-2xl shadow p-5">
+        <h4 class="text-gray-500 text-sm">Today's Sales</h4>
+        <h1 class="text-3xl font-bold mt-3 text-gray-800">
+            {{ today_sales_total|floatformat:0 }} 
+        </h1>
+        <div class="mt-4">
+            <img src="{% static 'account/css/images/sales.png' %}" class="w-20" />
+        </div>
+    </div>
+
+    <!-- CARD 2: Today's Deposits -->
+    <div class="bg-white rounded-2xl shadow p-5">
+        <h4 class="text-gray-500 text-sm">Today's Deposits</h4>
+        <h1 class="text-3xl font-bold mt-3 text-gray-800">
+            {{ today_deposits_total|floatformat:0 }} 
+        </h1>
+        <div class="mt-4">
+            <img src="{% static 'account/css/images/deposit.png' %}" class="w-20" />
+        </div>
+        <p class="text-sm text-gray-400 mt-3">Awaiting fulfillment</p>
+    </div>
+
+    <!-- CARD 3: Complete Receipts -->
+    <div class="bg-white rounded-2xl shadow p-5">
+        <h4 class="text-gray-500 text-sm">Complete Receipts</h4>
+        <h1 class="text-3xl font-bold mt-3 text-gray-800">
+            {{ complete_receipts }}
+        </h1>
+        <div class="mt-4">
+            <img src="{% static 'account/css/images/receipt.png' %}" class="w-20" />
+        </div>
+        <p class="text-sm text-gray-400 mt-3">Total sales completed</p>
+    </div>
+
+    <!-- CARD 4: Pending Receipts -->
+    <div class="bg-white rounded-2xl shadow p-5">
+        <h4 class="text-gray-500 text-sm">Pending Receipts</h4>
+        <h1 class="text-3xl font-bold mt-3 text-gray-800">
+            {{ pending_receipts }}
+        </h1>
+        <div class="mt-4">
+            <img src="{% static 'account/css/images/pending.png' %}" class="w-20" />
+        </div>
+        <p class="text-sm text-gray-400 mt-3">Awaiting completion</p>
+    </div>
+</div>
+          <!-- QUICK ACTIONS -->
+          <div
+            class="mt-10 bg-gradient-to-r from-purple-900 via-purple-700 to-indigo-800 rounded-2xl shadow p-6 text-white"
+          >
+            <h3 class="text-xl font-bold mb-4">QUICK ACTIONS</h3>
+
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="{% url 'sales_report' %}"
+                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
+              >
+                View report
+              </a>
+
+              <a
+                href="{% url 'sales_reg' %}"
+                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
+              >
+              Register Sale
+              </a>
+
+              <a
+                href="{% url 'track' %}"
+                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
+              >
+              View Stock
+              </a>
+            </div>
+          </div>
+
+          <!-- SALES TABLE -->
+          <div class="mt-10 bg-white rounded-2xl shadow p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-bold text-gray-700">Sales Page</h3>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <!-- TABLE HEAD -->
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Date
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Product
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Quantity
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Price
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Total
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Customer
+                    </th>
+
+                    <th
+                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
+                    >
+                      Payment
+                    </th>
+                  </tr>
+                </thead>
+
+                <!-- TABLE BODY -->
+                <tbody class="divide-y divide-gray-200">
+                  {% for sale in new_sale %}
+
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3">{{ sale.date }}</td>
+
+                    <td class="px-4 py-3">{{ sale.product_name }}</td>
+
+                    <td class="px-4 py-3">{{ sale.quantity }}</td>
+
+                    <td class="px-4 py-3">{{ sale.selling_price }}</td>
+
+                    <td class="px-4 py-3">{{ sale.total_amount }}</td>
+
+                    <td class="px-4 py-3">{{ sale.customer_name }}</td>
+
+                    <td class="px-4 py-3">{{ sale.payment }}</td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="7" class="text-center py-6 text-gray-500">
+                      No sales yet
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

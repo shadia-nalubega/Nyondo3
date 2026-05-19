@@ -1,0 +1,63 @@
+.group {
+  display: flex;
+}
+.page {
+  width: 70%;
+  margin: 50px 120px 50px 170px;
+  border: 1px solid grey;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+.grid {
+  display: flex;
+  /* border: 1px solid grey; */
+  padding: 10px 0px 10px 0px;
+}
+.hair {
+  border: 1px solid black;
+  padding: 5px 62px;
+  margin: 11px;
+}
+.table {
+  margin-top: 20px;
+  overflow-y: hidden;
+  width: 70%;
+  margin: 20px;
+}
+h1,
+h4,
+h3,
+h5 {
+  text-align: center;
+}
+.grid1 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.page1 {
+  
+  margin: 50px 120px 50px 120px;
+  border: 1px solid grey;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+.card{
+  width: 80%;
+  margin: 50px 120px 50px 200px;
+  border: 1px solid grey;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+/* .input{
+     box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+} */
+.button1 {
+  margin: 10px;
+  text-align: center;
+}
+.text {
+  border-bottom: 1px solid grey;
+}
+.header{
+  color: rgb(0, 115, 255);
+  text-align: center;
+}

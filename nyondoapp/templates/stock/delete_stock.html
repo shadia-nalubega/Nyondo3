@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Stock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 mt-20">
+        <div class="text-center">
+            <!-- Warning icon -->
+            <div class="mx-auto bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                <span class="text-red-600 text-3xl">⚠️</span>
+            </div>
+            
+            <h1 class="text-xl font-bold text-gray-800 mb-3">Confirm Deletion</h1>
+            
+            <p class="text-gray-600 mb-6">
+                Are you sure you want to delete <strong>{{ item.product_id }}</strong>?<br>
+                This action cannot be undone.
+            </p>
+            
+            <!-- Form to confirm deletion -->
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="flex gap-3 justify-center">
+                    <button type="submit" 
+                            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                        Yes, Delete
+                    </button>
+                    
+                    <a href="{% url 'stock_page' %}" 
+                       class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

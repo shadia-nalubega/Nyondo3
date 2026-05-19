@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %} dashboard {% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'account/css/credit.css'%}" />
+  </head>
+  <body>
+    <div class="container">
+      <form method="POST" action="{% url 'payment_register' %}">
+        {% csrf_token %}
+        <div class="text-center">
+
+        <h2 class=" mt-4 mb-3 text-primary pb-2">NyondoStock Hardware</h2>
+       
+        <h3>Credit Payment Form</h3>
+        </div>
+        <hr>
+        <div class="customer">
+          <div class="mb-3">
+            <label for="supplier_name" class="form-label">Supplier Name</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="supplier_name" 
+              name="supplier_name" 
+              required
+            />
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="product_description" class="form-label">Product</label>
+          <select 
+            class="form-select" 
+            name="product_description" 
+            required
+          >
+            <option value="">Choose Item</option>
+            <option value="Cement(cem iiN)">Cement(cem iiN)</option>
+            <option value="Cement(cem iiiN)">Cement(cem iiiN)</option>
+            <option value="Nails(inc 1)">Nails(inc 1)</option>
+            <option value="Nails(inc 3)">Nails(inc 3)</option>
+            <option value="Nails(inc 4)">Nails(inc 4)</option>
+            <option value="Nails(inc 5)">Nails(inc 5)</option>
+            <option value="Iron-bars(10 mm)">Iron-bars(10 mm)</option>
+            <option value="Iron-bars(12 mm)">Iron-bars(12 mm)</option>
+            <option value="Iron-bars(16 mm)">Iron-bars(16 mm)</option>
+            <option value="Guages">Guages</option>
+            <option value="Roofing nails">Roofing nails</option>
+            <option value="wheel barrows">wheel barrows</option>
+            <option value="wire mesh">wire mesh</option>
+            <option value="barbed wire(high tensile)">barbed wire(high tensile)</option>
+            <option value="barbed wire(low tensile)">barbed wire(low tensile)</option>
+            <option value="iron sheets()">iron sheets()</option>
+          </select>
+        </div>
+
+        <div class="customer">
+          <div class="col-md-6">
+            <label for="payment_date" class="form-label">Payment Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="payment_date"
+              name="payment_date"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="method" class="form-label">Payment Method</label>
+            <select 
+              class="form-select" 
+              name="method"
+              required
+            >
+              <option value="">select method</option>
+              <option value="cash">cash</option>
+              <option value="bank">bank</option>
+              <option value="cheque">cheque</option>
+              <option value="card_payment">card_payment</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="customer">
+            <div class="col-md-6">
+              <label for="amount_paid" class="form-label">Amount Paid</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="amount_paid"
+                name="quantity" 
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="balance_remaining" class="form-label">Balance Remaining</label>
+              <input
+                type="number"
+                class="form-control"
+                id="balance_remaining"
+                name="balance_remaining"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          <label for="comments">Comments</label><br />
+          <textarea 
+            name="comments" 
+            id="comments" 
+            class="form-control"
+            rows="3"
+          ></textarea>
+        </div>
+        
+        <button type="button" class="btn btn-md btn-secondary button mt-3" >
+          Back
+        </button>
+        <button type="submit" class="btn btn-md btn-primary button mt-3 float-end">
+          Save Payment
+        </button>
+      </form>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %} payment {% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'account/css/supplier_credit.css'%}"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <h2>NYONDOSTOCK</h2>
+      <h5>Supplier Credit Payments</h5>
+
+      <div class="grid mx-5">
+        <button type="button" class="btn btn-secondary float-end mb-5"></button>
+      </div>
+      <div class="card">
+        <!-- As a heading -->
+        
+        
+          <div class="col-md-12">
+            
+              <table class="table table-striped table-bordered table">
+                <thead>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Product</th>
+                    <th>Amount Paid</th>
+                    <th>Balance</th>
+                    <th>Payment Date</th>                    
+                    <th>comments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in payment %}
+                  <tr>
+                    <td>{{ item.supplier_name }}</td>
+                    <td>{{ item.product_description }}</td>
+                    <td>{{ item.amount_paid }}</td>
+                    <td>{{ item.balance_remaining }}</td>
+                    <td>{{ item.payment_date }}</td>                   
+                    <td>{{ item.comments }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="7">No payments recorded yet.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            
+          </div>
+        
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

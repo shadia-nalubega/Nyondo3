@@ -1,0 +1,28 @@
+.header{
+    text-align: center;
+    border-bottom: 1px solid grey;
+}
+.card{
+    width: 40%;
+    margin: 60px 20px 60px 400px;
+    padding: 20px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+}
+.detail{
+    border-bottom: 1px solid grey;
+   
+ 
+}
+.total{
+    border-bottom:1px solid grey ;
+    border-top:1px solid grey ;
+    display: grid;
+    justify-content: end;
+    
+}
+.button{
+    border-top:1px solid grey ;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}

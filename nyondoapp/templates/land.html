@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nyondostock Hardware - Building Materials</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      :root {
+        --bg-color: #e0e5ec;
+        --light-shadow: #ffffff;
+        --dark-shadow: #a3b1c6;
+        --text-color: #5a677d;
+        --accent-color-start: #8e9ef2;
+        --accent-color-end: #667eea;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        font-family: "Poppins", sans-serif;
+        color: var(--text-color);
+      }
+
+      @layer utilities {
+        .neumorphic-flat {
+          background-color: var(--bg-color);
+          box-shadow:
+            5px 5px 10px var(--dark-shadow),
+            -5px -5px 10px var(--light-shadow);
+          transition: all 0.3s ease-in-out;
+        }
+        .neumorphic-inset {
+          background-color: var(--bg-color);
+          box-shadow:
+            inset 5px 5px 10px var(--dark-shadow),
+            inset -5px -5px 10px var(--light-shadow);
+          transition: all 0.3s ease-in-out;
+        }
+        .neumorphic-pressed {
+          box-shadow:
+            inset 2px 2px 5px var(--dark-shadow),
+            inset -2px -2px 5px var(--light-shadow);
+        }
+        .text-gradient {
+          background: linear-gradient(
+            to right,
+            var(--accent-color-start),
+            var(--accent-color-end)
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- =========== Header =========== -->
+    <header class="sticky top-0 z-50">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center backdrop-blur-sm bg-white/30 rounded-b-xl neumorphic-flat"
+      >
+         <!-- <div class="w-10 h-10 rounded-xl neumorphic-flat flex items-center justify-center">
+        <a href="/" class="logo-link" aria-label="Homepage">
+      
+    </a>
+    </div> -->
+    <img src="{% static 'account/css/images/NS.png' %}" alt="Company Name Logo" width="134" height="60">
+        <a
+          href="{% url 'login' %}"
+          class="hidden md:block px-6 py-2 rounded-full font-semibold neumorphic-flat hover:neumorphic-pressed"
+          >Login</a
+        >
+
+        <button
+          id="mobile-menu-button"
+          class="md:hidden p-2 rounded-full neumorphic-flat hover:neumorphic-pressed"
+        >
+          <i data-lucide="menu"></i>
+        </button>
+      </nav>
+
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden container mx-auto px-6 pb-4"
+      >
+        <div class="mt-2 p-4 neumorphic-flat rounded-xl">
+          <a
+            href="#features"
+            class="block py-2 text-center hover:text-gradient font-medium"
+            >Features</a
+          >
+          <a
+            href="#products"
+            class="block py-2 text-center hover:text-gradient font-medium"
+            >Products</a
+          >
+          <a
+            href="#contact"
+            class="block py-2 text-center hover:text-gradient font-medium"
+            >Contact</a
+          >
+          <a
+            href="#"
+            class="block mt-4 w-full text-center py-3 rounded-full font-semibold neumorphic-flat hover:neumorphic-pressed"
+            >Login</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- =========== Hero Section with Building Materials Image =========== -->
+      <section class="relative min-h-screen flex items-center">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSan6J7fqgY3Rm3w2XkBfE-g59kmnMccr2XNA&s"
+            alt="Building Materials Hardware Store"
+            class="w-full h-full object-cover"
+          />
+          <!-- Dark Overlay for better text readability -->
+          <div class="absolute inset-0 bg-black/50"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative container mx-auto px-6 text-center z-10">
+          <div class="max-w-4xl mx-auto">
+            <h1
+              class="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 text-white"
+            >
+              NYONDOSTOCK
+              <span class="block text-purple-400">GENERAL HARDWARE</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-white/90">
+              Quality Building Materials. Affordable Prices.
+            </p>
+            <div class="flex justify-center gap-4">
+              <a
+                href="{% url 'login' %}"
+                class="px-8 py-4 rounded-full text-lg font-bold neumorphic-flat text-gray-800 hover:neumorphic-pressed"
+              >
+                LOGIN
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== Products Section =========== -->
+      <section id="products" class="py-20">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold">Building Materials We Supply</h2>
+            <p class="mt-2 text-lg">
+              Quality materials for all your construction needs
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Product 1 - Cement -->
+            <div
+              class="p-6 text-center rounded-2xl neumorphic-flat hover:-translate-y-2"
+            >
+              <div class="inline-flex p-4 rounded-full neumorphic-inset">
+                <i data-lucide="package" class="w-10 h-10 text-gradient"></i>
+              </div>
+              <h3 class="text-xl font-bold mt-4 mb-2">Cement</h3>
+              <p class="text-sm">
+                Premium quality cement for strong foundations
+              </p>
+            </div>
+
+            <!-- Product 2 - Iron Sheets -->
+            <div
+              class="p-6 text-center rounded-2xl neumorphic-flat hover:-translate-y-2"
+            >
+              <div class="inline-flex p-4 rounded-full neumorphic-inset">
+                <i data-lucide="hard-drive" class="w-10 h-10 text-gradient"></i>
+              </div>
+              <h3 class="text-xl font-bold mt-4 mb-2">Iron Sheets</h3>
+              <p class="text-sm">Durable roofing sheets for any building</p>
+            </div>
+
+            <!-- Product 3 - Steel Bars -->
+            <div
+              class="p-6 text-center rounded-2xl neumorphic-flat hover:-translate-y-2"
+            >
+              <div class="inline-flex p-4 rounded-full neumorphic-inset">
+                <i data-lucide="activity" class="w-10 h-10 text-gradient"></i>
+              </div>
+              <h3 class="text-xl font-bold mt-4 mb-2">Steel Bars</h3>
+              <p class="text-sm">High-tensile steel for reinforcement</p>
+            </div>
+
+            <!-- Product 4 - Bricks -->
+            <div
+              class="p-6 text-center rounded-2xl neumorphic-flat hover:-translate-y-2"
+            >
+              <div class="inline-flex p-4 rounded-full neumorphic-inset">
+                <i data-lucide="grid" class="w-10 h-10 text-gradient"></i>
+              </div>
+              <h3 class="text-xl font-bold mt-4 mb-2">Bricks</h3>
+              <p class="text-sm">Strong interlocking building blocks</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== Features Section =========== -->
+
+      <!-- =========== Footer =========== -->
+      <footer class="py-10">
+        <div class="container mx-auto px-6 text-center">
+          <h2 class="text-3xl font-bold mb-4 text-gradient">
+            Nyondostock General Hardware
+          </h2>
+          <p class="mb-2">Building materials for a stronger tomorrow</p>
+          <p>© 2024 Nyondostock. All Rights Reserved.</p>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      lucide.createIcons();
+
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+    </script>
+  </body>
+</html>

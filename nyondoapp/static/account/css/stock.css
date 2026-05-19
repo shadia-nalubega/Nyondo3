@@ -1,0 +1,79 @@
+body{
+    width: 100%;
+    margin: 0px;
+    padding: 0;
+}
+.col-3{
+    border: 1px solid gray;
+    height: 97vh;
+    background-color: #002c51;
+}
+/* .parent{
+    border: 1px solid black;
+    
+} */
+.col-9{
+    border: 1px solid gray;
+    /* margin: 10px; */
+    padding-right: 20px;
+}
+h6{
+    color: wheat;
+}
+
+h4{
+    color: white;
+}
+.container{
+    margin: 0px;
+    padding: auto;
+}
+.cards{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0px 10px 15px;
+    gap: 20px;
+
+   
+}
+.card{
+     box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+}
+.tabb{
+    border: 1px solid grey;
+    min-width: 50%;
+    margin-top: 10px;
+    height: 40vh;
+
+}
+.card1{
+    box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+    padding: 10px 0px 10px 15px;
+    margin: 10px;
+    width: 100%;
+    justify-content: center;
+}
+.tab2{
+    
+    height: 40vh;
+}
+select{
+    width: 100%;
+}
+.tabs{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 10px 0px 10px 15px;
+}
+.low{
+    min-width: 100%;
+    justify-content: space-between;
+  
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: center;
+}

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Temporary Receipt - NyondoStock</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        body {
+            background: #f4f7fc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .receipt {
+            max-width: 550px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h3 {
+            color: #0d6efd;
+            font-weight: bold;
+            margin: 0;
+        }
+        .header p {
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .not-final {
+            background-color: #ffc107;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #856404;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .pending-card {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .pending-card h5 {
+            color: #856404;
+            margin: 0;
+            font-weight: bold;
+        }
+        .info-row {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            width: 40%;
+            color: #555;
+        }
+        .info-value {
+            width: 60%;
+            color: #333;
+        }
+        .section-title {
+            background: #0d6efd;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            margin: 20px 0 0 0;
+        }
+        .section-content {
+            border: 1px solid #ddd;
+            border-top: none;
+            padding: 15px;
+            border-radius: 0 0 5px 5px;
+            background: #fafafa;
+        }
+        .amount-highlight {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .text-success {
+            color: #28a745 !important;
+        }
+        .text-danger {
+            color: #dc3545 !important;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            padding: 12px;
+            margin-top: 20px;
+        }
+        .button {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #0d6efd;
+            border: none;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0b5ed7;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <!-- HEADER -->
+        <div class="header">
+            <h3>NYONDOSTOCK HARDWARE</h3>
+            <p>Kampala, Uganda | Tel: 0770 000 000</p>
+            <div class="not-final">TEMPORARY RECEIPT - NOT FINAL</div>
+        </div>
+
+        <!-- RECEIPT INFO -->
+        <div class="section-title">RECEIPT INFORMATION</div>
+        <div class="section-content">
+            <div class="info-row">
+                <div class="info-label">Receipt No:</div>
+                <div class="info-value"><strong>#DEP-{{ deposit.receipt_no }}</strong></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Date:</div>
+                <div class="info-value">{{ deposit.date }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Time:</div>
+                <div class="info-value">{% now "h:i A" %}</div>
+            </div>
+        </div>
+
+        <!-- PENDING STATUS -->
+        <div class="pending-card">
+            <h5>PENDING COMPLETION</h5>
+            <div style="margin-top: 5px;">Balance Due: <strong class="text-danger">{{ deposit.remaining_balance }} UGX</strong></div>
+        </div>
+
+        <!-- CUSTOMER INFORMATION -->
+        <div class="section-title">CUSTOMER INFORMATION</div>
+        <div class="section-content">
+            <div class="info-row">
+                <div class="info-label">Customer Name:</div>
+                <div class="info-value"><strong>{{ deposit.customer_name }}</strong></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Phone:</div>
+                <div class="info-value">{{ deposit.phone }}</div>
+            </div>
+        </div>
+
+        <!-- PRODUCT INFORMATION -->
+        <div class="section-title">PRODUCT INFORMATION</div>
+        <div class="section-content">
+            <div class="info-row">
+                <div class="info-label">Product:</div>
+                <div class="info-value"><strong>{{ deposit.product_name }}</strong></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Total Price:</div>
+                <div class="info-value">{{ deposit.total_price }} UGX</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Deposit Paid:</div>
+                <div class="info-value"><strong class="text-success">{{ deposit.deposit_amount }} UGX</strong></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Remaining Balance:</div>
+                <div class="info-value"><strong class="text-danger amount-highlight">{{ deposit.remaining_balance }} UGX</strong></div>
+            </div>
+        </div>
+
+        <!-- PAYMENT DETAILS -->
+        <div class="section-title">PAYMENT DETAILS</div>
+        <div class="section-content">
+            <div class="info-row">
+                <div class="info-label">Received By:</div>
+                <div class="info-value">{{ deposit.received_by }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Expected Completion:</div>
+                <div class="info-value">{{ deposit.expected_completion }}</div>
+            </div>
+        </div>
+
+        <!-- IMPORTANT NOTICE -->
+        <div class="alert-warning">
+            <strong>IMPORTANT NOTICE:</strong><br>
+            This is a temporary receipt for your deposit.<br>
+            Please keep it safe and present it when completing your purchase.<br>
+            <strong>Stock will be released upon full payment.</strong>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-text">
+            Thank you for your business!<br>
+            Goods sold are not returnable
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="button no-print">
+            <button class="btn btn-primary" onclick="window.print()">PRINT RECEIPT</button>
+            <a href="{% url 'deposit_page' %}" class="btn btn-secondary">EXIT</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

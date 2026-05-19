@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen items-center justify-center bg-[#f9f9f9] p-4">
+    <!-- Login Form Section -->
+    <section class="w-full max-w-md">
+      <div class="rounded-none bg-white p-8 shadow-sm">
+        <!-- Header -->
+        <div class="mb-8 text-center">
+          <div class="mb-4 flex justify-center">
+            <img src="{% static 'account/css/images/NS.png' %}" alt="company Logo" width="250" height="100" >
+          </div>
+          <h1 class="mb-2 text-2xl font-bold text-black">Welcome Back</h1>
+          <p class="text-sm text-gray-600">
+            Sign in to your account to continue
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-6">
+          <div>
+            <label
+              for="User_role"
+              class="mb-2 block text-sm font-medium text-gray-700"
+              >User_role</label
+            >
+            <input
+              type="User_role"
+              id="user_role"
+              name="User_role"
+              class="w-full border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="email"
+              class="mb-2 block text-sm font-medium text-gray-700"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="w-full border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none"
+              placeholder="your.email@example.com"
+              required
+            />
+          </div>
+
+          <div>
+            <div class="mb-2 flex items-center justify-between">
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700"
+                >Password</label
+              >
+              <a
+                href="#"
+                class="text-sm text-gray-600 transition-colors hover:text-black"
+                >Forgot password?</a
+              >
+            </div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="w-full border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              class="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+            />
+            <label for="remember" class="ml-2 block text-sm text-gray-700">
+              Remember me
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+          >
+            LogIn
+          </button>
+        </form>
+ 
+        <!-- Divider -->
+
+        <!-- Sign Up Link -->
+      </div>
+    </section>
+  </body>
+</html>

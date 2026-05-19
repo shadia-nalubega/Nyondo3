@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %} dashboard {% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'account/css/credit.css' %}" />
+  </head>
+  <body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+      <form method="POST" action="{% url 'supplier_credit_register' %}" class="shadow-lg p-4 rounded bg-white" style="max-width: 800px; width: 100%;">
+        {% csrf_token %}
+        
+        <div class="text-center mb-4">
+          <h2 class="text-primary">NyondoStock Hardware</h2>
+          <h3 class="text-secondary">Supplier Credit Form</h3>
+          <hr />
+        </div>
+
+        <!-- Select Supplier -->
+        <div class="mb-3">
+          <label for="supplier_name" class="form-label fw-bold">Select Supplier</label>
+          <select name="supplier_name" id="supplier_name" class="form-select">
+            <option value="">-- Select a supplier --</option>
+            {% for supplier in suppliers %}
+            <option value="{{ supplier.id }}">
+              {{ supplier.company_name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Location and Email Row -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="location" class="form-label fw-bold">Location</label>
+            <input
+              type="text"
+              placeholder="Input your location"
+              class="form-control"
+              name="location"
+              value="{{ location }}"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="Email" class="form-label fw-bold">Email</label>
+            <input
+              type="email"
+              placeholder="Input your Email"
+              class="form-control"
+              name="email"
+              value="{{ email }}"
+            />
+          </div>
+        </div>
+
+        <!-- TRN Row -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="TRN" class="form-label fw-bold">TRN</label>
+            <input
+              type="text"
+              placeholder="Input your TRN"
+              class="form-control"
+              name="TRN"
+              value="{{ TRN }}"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="phone" class="form-label fw-bold">Phone Number</label>
+            <input
+              type="tel"
+              class="form-control"
+              name="phone"
+              value="{{ phone }}"
+            />
+          </div>
+        </div>
+
+        <!-- Product Description -->
+        <div class="mb-3">
+          <label for="product_description" class="form-label fw-bold">Product Description</label>
+          <textarea
+            class="form-control"
+            id="product_description"
+            name="product_description"
+            rows="3"
+            placeholder="Enter product description"
+          >{{ product_description }}</textarea>
+        </div>
+
+        <!-- Item Section -->
+        <h4 class="mt-4 mb-3 text-primary border-bottom pb-2">Item Details</h4>
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="quantity" class="form-label fw-bold">Quantity</label>
+            <input
+              type="number"
+              class="form-control"
+              id="quantity"
+              name="quantity"
+              value="{{ quantity }}"
+              placeholder="Enter quantity"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="amount_owed" class="form-label fw-bold">Amount Owed</label>
+            <input
+              type="number"
+              class="form-control"
+              id="amount_owed"
+              name="amount_owed"
+              value="{{ amount_owed }}"
+              placeholder="Enter amount"
+              step="0.01"
+            />
+          </div>
+        </div>
+        <div class="col-md-5">
+    <label for="status" class="form-label fw-bold">Status</label>
+    <select name="status" id="status" class="form-select" required>
+      <option value="">-- Select Status --</option>
+      <option value="Pending">Pending</option>
+      <option value="Paid">Paid</option>
+      <option value="Overdue">Overdue</option>
+    </select>
+  </div>
+
+        <!-- Status and Notes Row -->
+        <div class="row mb-3">          
+          <div class="col-md-6">
+            <label for="notes" class="form-label fw-bold">Notes</label>
+            <textarea
+              name="notes"
+              class="form-control"
+              rows="3"
+              placeholder="Enter notes (optional)"
+            >{{ notes }}</textarea>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center gap-3 mt-4 pt-3 border-top">
+          <button type="submit" class="btn btn-primary px-4 py-2">
+            Register Supplier
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary px-4 py-2"
+            onclick="window.history.back();"
+          >
+            Back
+          </button>
+        </div>
+
+        <p class="text-center mt-4 text-muted small">
+          &copy; NyondoStock Hardware 2026 .
+        </p>
+      </form>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

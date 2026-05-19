@@ -1,0 +1,46 @@
+form {
+    margin: 200px 200px;
+    padding: 40px;
+    border: 1px, solid, rgb(184, 181, 181);
+    border-radius: 10px;
+    width: 760px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+    height: 50%;
+    
+}
+.customer {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+/* .item {
+    display: grid;
+    grid-template-columns: 2fr;
+
+    
+} */
+ h2,h3{
+    text-align: center;
+ }
+ .float{
+    float: right;
+ }
+
+/* .container {
+    background-color: rgb(236, 236, 236);
+}  */
+
+label {
+    font-family: Arial;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+input::select{
+    margin:10px;
+   
+}
+.input{
+     box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+
+}

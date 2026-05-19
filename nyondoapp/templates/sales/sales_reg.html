@@ -1,0 +1,462 @@
+<!-- sales_reg.html - FIXED VERSION -->
+<!doctype html>
+<html>
+  <head>
+    {% load static %}
+    <title>Sales Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'account/css/sales_reg.css'%}" />
+    <style>
+      /* Remove borders and backgrounds from item rows */
+      .item-row {
+        border: none !important;
+        background: transparent !important;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #dee2e6 !important; /* Optional: light separator line */
+      }
+
+      /* Remove background from form controls if needed */
+      .form-control,
+      .form-select {
+        background-color: #fff;
+      }
+
+      /* Style for the action buttons container */
+      .item-actions {
+        margin-top: 15px;
+        padding-top: 10px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-2">
+      <form method="POST" id="salesForm">
+        {% csrf_token %}
+
+        <h2>SALES FORM</h2>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label>Cashier </label>
+            <input type="text" name="cashier" class="form-control" required />
+          </div>
+          <div class="col-md-4">
+            <label>Customer Name </label>
+            <input
+              type="text"
+              name="customer_name"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <label>Customer Type </label>
+            <select
+              name="customer_type"
+              id="customer_type"
+              class="form-control"
+              required
+            >
+              <option value="normal">Select customer</option>
+              <option value="normal">Normal Buyer</option>
+              <option value="retailer">Retailer</option>
+              <option value="wholesaler">Wholesaler</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Payment Method </label>
+          <select name="payment" class="form-control" required>
+            <option value="Cash">Cash</option>
+            <option value="Mobile Money">Mobile Money</option>
+            <option value="Card">Card</option>
+          </select>
+        </div>
+
+        <hr />
+        <h4>Items Sold</h4>
+
+        <!-- Container for dynamic items -->
+        <div id="items-container"></div>
+
+        <!-- Buttons at the bottom of all items -->
+        <div class="row mt-3 mb-3">
+          <div class="col-md-12 d-flex justify-content-end gap-2">
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="deleteLastItem()"
+            >
+              ✖ Delete Last Item
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addNewItem()"
+            >
+              + Add Item
+            </button>
+          </div>
+        </div>
+
+        <hr />
+
+        <hr />
+
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Subtotal: <span id="subtotal">0</span> UGX</h5>
+          </div>
+          <div class="col-md-6">
+            <h5>Transport Fee: <span id="transport">0</span> UGX</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h4>GRAND TOTAL: <span id="grandtotal">0</span> UGX</h4>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">
+          Register Sale
+        </button>
+        <a href="{% url 'receipt' %}" class="btn btn-secondary mt-3"
+          >Generate Receipt</a
+        >
+      </form>
+    </div>
+
+    <!-- HIDDEN TEMPLATE - Each item row -->
+    <div id="item-template" style="display: none">
+      <div class="item-row">
+        <!-- Product fields row -->
+        <div class="row">
+          <div class="col-md-4">
+            <label>Product </label>
+            <select
+              name="product_name"
+              class="form-control product"
+              onchange="handleProductChange(this)"
+              required
+            >
+              <option value="">Choose Item</option>
+              <option value="Cement(cem iiN)">Cement(cem iiN)</option>
+              <option value="Cement(cem iiiN)">Cement(cem iiiN)</option>
+              <option value="Nails(inc 1)">Nails(inc 1)</option>
+              <option value="Nails(inc 3)">Nails(inc 3)</option>
+              <option value="Nails(inc 4)">Nails(inc 4)</option>
+              <option value="Nails(inc 5)">Nails(inc 5)</option>
+              <option value="Iron-bars(10 mm)">Iron-bars(10 mm)</option>
+              <option value="Iron-bars(12 mm)">Iron-bars(12 mm)</option>
+              <option value="Iron-bars(16 mm)">Iron-bars(16 mm)</option>
+              <option value="Guages">Guages</option>
+              <option value="Roofing nails">Roofing nails</option>
+              <option value="wheel barrows">wheel barrows</option>
+              <option value="wire mesh">wire mesh</option>
+              <option value="barbed wire(high tensile)">
+                barbed wire(high tensile)
+              </option>
+              <option value="barbed wire(low tensile)">
+                barbed wire(low tensile)
+              </option>
+              <option value="iron sheets()">iron sheets()</option>
+            </select>
+            <div class="error-msg text-danger small"></div>
+          </div>
+          <div class="col-md-4">
+            <label>Buying Price</label>
+            <input
+              type="number"
+              name="buying_price"
+              class="form-control buying-price"
+              min="1000"
+              step="1"
+              onchange="updatePrice(this)"
+              required
+            />
+          </div>
+          <div class="col-md-4">
+            <label>Quantity </label>
+            <input
+              type="number"
+              name="quantity"
+              class="form-control qty"
+              min="1"
+              onchange="calcRowTotal(this)"
+              required
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label>Selling Price</label>
+            <input
+              type="text"
+              name="selling_price"
+              class="form-control price"
+              readonly
+            />
+          </div>
+          <div class="col-md-4">
+            <label>Distance (km)</label>
+            <input
+              type="number"
+              name="distance"
+              class="form-control distance"
+              min="0"
+              onchange="calculateGrandTotal()"
+            />
+          </div>
+        </div>
+
+        <!-- Item Total and Action Buttons row -->
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label>Item Total:</label>
+            <strong class="item-total">0</strong> UGX
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function deleteLastItem() {
+        let rows = document.querySelectorAll(".item-row");
+        if (rows.length > 1) {
+          rows[rows.length - 1].remove();
+          updateAllDropdowns();
+          calculateGrandTotal();
+        } else {
+          alert("You must keep at least one item!");
+        }
+      }
+      function getSelectedProducts() {
+        let selected = [];
+        let allSelects = document.querySelectorAll(".product");
+        for (let i = 0; i < allSelects.length; i++) {
+          if (allSelects[i].value) {
+            selected.push(allSelects[i].value);
+          }
+        }
+        return selected;
+      }
+
+      function updateAllDropdowns() {
+        let selectedProducts = getSelectedProducts();
+        let allSelects = document.querySelectorAll(".product");
+
+        for (let i = 0; i < allSelects.length; i++) {
+          let currentSelect = allSelects[i];
+          let currentValue = currentSelect.value;
+
+          for (let j = 0; j < currentSelect.options.length; j++) {
+            let option = currentSelect.options[j];
+            if (option.value && option.value !== currentValue) {
+              if (selectedProducts.includes(option.value)) {
+                option.disabled = true;
+              } else {
+                option.disabled = false;
+              }
+            }
+          }
+        }
+      }
+
+      function handleProductChange(selectElement) {
+        let row = selectElement.closest(".item-row");
+        let errorDiv = row.querySelector(".error-msg");
+        let selectedProducts = getSelectedProducts();
+        let currentValue = selectElement.value;
+
+        let count = 0;
+        for (let i = 0; i < selectedProducts.length; i++) {
+          if (selectedProducts[i] === currentValue) {
+            count++;
+          }
+        }
+
+        if (count > 1) {
+          errorDiv.innerHTML = "❌ This product is already selected!";
+          selectElement.value = "";
+          row.querySelector(".price").value = "";
+          row.querySelector(".item-total").innerHTML = "0";
+          calculateGrandTotal();
+        } else {
+          errorDiv.innerHTML = "";
+        }
+
+        updateAllDropdowns();
+        calculateGrandTotal();
+      }
+
+      function getPriceMultiplier(customerType) {
+        if (customerType === "wholesaler") return 1.1;
+        if (customerType === "retailer") return 1.15;
+        return 1.2;
+      }
+
+      function updatePrice(buyingPriceInput) {
+        let row = buyingPriceInput.closest(".item-row");
+        let customerType = document.getElementById("customer_type").value;
+        let buyingPrice = parseFloat(buyingPriceInput.value);
+
+        if (buyingPrice > 0) {
+          let multiplier = getPriceMultiplier(customerType);
+          let sellingPrice = Math.round(buyingPrice * multiplier);
+          row.querySelector(".price").value = sellingPrice;
+          calcRowTotal(row.querySelector(".qty"));
+        } else {
+          row.querySelector(".price").value = "";
+          row.querySelector(".item-total").innerHTML = "0";
+          calculateGrandTotal();
+        }
+      }
+
+      function updateAllPrices() {
+        let allBuyingPrices = document.querySelectorAll(".buying-price");
+        for (let i = 0; i < allBuyingPrices.length; i++) {
+          if (allBuyingPrices[i].value) {
+            updatePrice(allBuyingPrices[i]);
+          }
+        }
+      }
+
+      function addNewItem() {
+        let template = document.getElementById("item-template");
+        let newRow = template.cloneNode(true);
+        newRow.style.display = "block";
+        newRow.removeAttribute("id");
+
+        newRow.querySelector(".product").value = "";
+        newRow.querySelector(".buying-price").value = "";
+        newRow.querySelector(".qty").value = "1";
+        newRow.querySelector(".price").value = "";
+        newRow.querySelector(".distance").value = "0";
+        newRow.querySelector(".item-total").innerHTML = "0";
+        newRow.querySelector(".error-msg").innerHTML = "";
+
+        document.getElementById("items-container").appendChild(newRow);
+
+        let rows = document.querySelectorAll(".item-row");
+        if (rows.length === 1) {
+          let removeBtn = rows[0].querySelector(".remove-btn");
+          if (removeBtn) removeBtn.style.display = "none";
+        } else {
+          document.querySelectorAll(".remove-btn").forEach((btn) => {
+            btn.style.display = "inline-block";
+          });
+        }
+
+        updateAllDropdowns();
+        calculateGrandTotal();
+      }
+
+      function removeItem(button) {
+        let rows = document.querySelectorAll(".item-row");
+        if (rows.length > 1) {
+          button.closest(".item-row").remove();
+
+          let remainingRows = document.querySelectorAll(".item-row");
+          if (remainingRows.length === 1) {
+            let removeBtn = remainingRows[0].querySelector(".remove-btn");
+            if (removeBtn) removeBtn.style.display = "none";
+          }
+
+          updateAllDropdowns();
+          calculateGrandTotal();
+        } else {
+          alert("You must have at least one item!");
+        }
+      }
+
+      function calcRowTotal(qtyInput) {
+        let row = qtyInput.closest(".item-row");
+        let qty = parseInt(row.querySelector(".qty").value) || 0;
+        let price = parseInt(row.querySelector(".price").value) || 0;
+        let total = qty * price;
+        row.querySelector(".item-total").innerHTML = total;
+        calculateGrandTotal();
+      }
+
+      function calculateGrandTotal() {
+        let subtotal = 0;
+        let maxDistance = 0;
+
+        let rows = document.querySelectorAll(".item-row");
+        for (let i = 0; i < rows.length; i++) {
+          let itemTotal =
+            parseInt(rows[i].querySelector(".item-total").innerHTML) || 0;
+          subtotal += itemTotal;
+
+          let distance =
+            parseInt(rows[i].querySelector(".distance").value) || 0;
+          if (distance > maxDistance) maxDistance = distance;
+        }
+
+        let transport = maxDistance > 10 || subtotal < 500000 ? 30000 : 0;
+
+        document.getElementById("subtotal").innerHTML =
+          subtotal.toLocaleString();
+        document.getElementById("transport").innerHTML =
+          transport.toLocaleString();
+        document.getElementById("grandtotal").innerHTML = (
+          subtotal + transport
+        ).toLocaleString();
+      }
+
+      document.getElementById("customer_type").onchange = function () {
+        updateAllPrices();
+      };
+
+      document.getElementById("salesForm").onsubmit = function (e) {
+        let selectedProducts = getSelectedProducts();
+        let uniqueProducts = [...new Set(selectedProducts)];
+
+        if (selectedProducts.length !== uniqueProducts.length) {
+          alert("You cannot select the same product twice!");
+          e.preventDefault();
+          return false;
+        }
+
+        if (selectedProducts.length === 0) {
+          alert("Please select at least one product!");
+          e.preventDefault();
+          return false;
+        }
+
+        let allRows = document.querySelectorAll(".item-row");
+        for (let i = 0; i < allRows.length; i++) {
+          let row = allRows[i];
+          let productSelect = row.querySelector(".product");
+          let buyingPrice = row.querySelector(".buying-price");
+
+          if (productSelect.value && !buyingPrice.value) {
+            alert("Please enter buying price for: " + productSelect.value);
+            buyingPrice.focus();
+            e.preventDefault();
+            return false;
+          }
+        }
+
+        return true;
+      };
+
+      window.onload = function () {
+        addNewItem();
+      };
+    </script>
+  </body>
+</html>

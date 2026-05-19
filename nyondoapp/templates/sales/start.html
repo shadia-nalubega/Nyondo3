@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %} Welcome to Sales {% endlock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="nav nav-pills bg-secondary">
+        <ul class="nav justify-content-end">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <img
+                src="/docs/5.3/assets/brand/bootstrap-logo.svg"
+                alt="Logo"
+                width="30"
+                height="24"
+                class="d-inline-block align-text-top"
+              />
+              NyondoStock
+            </a>
+          </div>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/"
+              >View Sales</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% urls'sales-reg' %}">Add Sale</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% urls'receipt' %}">View Receipt</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% urls'sales-report' %}">Report</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    {% block content %} {% endblock %}
+    <footer class="bg-light text-center py-3 mt-4">
+      <p>&copy; 2026 SalesApp. All rights reserved.</p>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
