@@ -1,0 +1,167 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Employee Registration</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-sm border-b border-slate-200">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-indigo-600">
+          NYONDOSTOCK
+        </h2>
+
+        <a
+          href="{% url 'dash' %}"
+          class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl transition"
+        >
+          Dashboard
+        </a>
+      </div>
+    </nav>
+
+    <!-- PAGE -->
+    <div class="max-w-3xl mx-auto p-6">
+      <!-- HEADING -->
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-slate-800">
+          Employee Registration
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+          Register new system employees and assign roles.
+        </p>
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
+        <form method="POST" class="space-y-6">
+          {% csrf_token %}
+
+          <!-- NAME -->
+          <div>
+            <label class="block mb-2 font-semibold text-slate-700">
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter employee name"
+              class="w-full border border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <!-- EMAIL -->
+          <div>
+            <label class="block mb-2 font-semibold text-slate-700">
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter employee email"
+              class="w-full border border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <!-- EMPLOYEE ID -->
+          <div>
+            <label class="block mb-2 font-semibold text-slate-700">
+              Employee ID
+            </label>
+
+            <input
+              type="text"
+              name="employee_id"
+              placeholder="EMP001"
+              class="w-full border border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <!-- ROLE -->
+          <div>
+            <label class="block mb-2 font-semibold text-slate-700">
+              Role
+            </label>
+
+            <select
+              name="role"
+              class="w-full border border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            >
+              <option value="">Select Role</option>
+
+              <option value="admin">Admin</option>
+
+              <option value="sales_attendant">
+                Sales Attendant
+              </option>
+
+              <option value="store_manager">
+                Store Manager
+              </option>
+            </select>
+          </div>
+
+          <!-- PASSWORD -->
+          <div>
+            <label class="block mb-2 font-semibold text-slate-700">
+              Password
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              class="w-full border border-slate-300 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <!-- BUTTONS -->
+          <div class="flex gap-4 pt-4">
+            <button
+              type="submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-semibold transition"
+            >
+              Register Employee
+            </button>
+
+            <a
+              href="{% url 'dash' %}"
+              class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-2xl font-semibold transition"
+            >
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

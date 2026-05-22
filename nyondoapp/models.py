@@ -1,7 +1,5 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 # supplier models here
@@ -116,8 +114,6 @@ class Staff(models.Model):
         ("sales_attendant","sales_attendant"),
         ("store_manager","store_manager")
     ]
-    name = models.CharField(max_length=100, blank=False)
-    email = models.EmailField()
-    password = models.CharField(max_length=16)
-    employee_id = models.TextField(blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    employee_id = models.CharField(max_length=50)
     role = models.CharField(max_length=50, choices=ROLES)

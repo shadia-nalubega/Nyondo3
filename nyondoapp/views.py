@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth.models import User
 from datetime import date
-from nyondoapp.models import Supplier, Payment, Scredit, Stock, Sale, Product, Customer, Deposit
+from nyondoapp.models import Supplier, Payment, Scredit, Stock, Sale, Product, Customer, Deposit,Staff
 
 # ==================== SUPPLIER SECTION ====================
 
@@ -129,6 +131,10 @@ def stock_register(request):
 
 # MAIN STOCK DASHBOARD (with cards)
 def stock_dash(request):
+    # Check role FIRST, before any database queries
+    if request.session.get("role") != "store_manager":
+        return redirect("login")
+    
     # Get all stock items
     all_stock = Stock.objects.select_related().order_by('-id')
     
@@ -216,6 +222,10 @@ def delete_stock(request, pk):
 # ==================== SALES SECTION ====================
 
 def sales_dash(request):
+    # Check role FIRST
+    if request.session.get("role") != "sales_attendant":
+        return redirect("login")
+    
     from datetime import date
     today = date.today()
     
@@ -223,7 +233,7 @@ def sales_dash(request):
     all_sales = Sale.objects.all().order_by('-id')
     
     # Card calculations
-    today_sales_total= Sale.objects.filter(date=today).count()
+    today_sales_total = Sale.objects.filter(date=today).count()
     today_deposits_total = Deposit.objects.filter(deposit_date=today).count()
     complete_receipts = Sale.objects.count()
     pending_receipts = Deposit.objects.filter(status='Pending').count()
@@ -446,15 +456,17 @@ def stock_report(request):
     }
     return render(request, 'stock/stock_report.html', context)
 
-# ==================== OTHER PAGES ====================
-
 def dash(request):
+    # Check role FIRST
+    if request.session.get("role") != "admin":
+        return redirect("login")
+    
     suppliers = Supplier.objects.all().order_by('-id')
     total_stock_count = Stock.objects.count()
     total_suppliers = Supplier.objects.count()
     total_sales = Sale.objects.count()
     
-    # Calculate total revenue (sum of all sale totals + transport fees)
+    # Calculate total revenue
     all_sales = Sale.objects.all()
     total_revenue = 0
     for sale in all_sales:
@@ -465,18 +477,63 @@ def dash(request):
         'total_stock_count': total_stock_count,
         'total_suppliers': total_suppliers,
         'total_sales': total_sales,
-        'total_revenue': total_revenue,  }
-
-
-
-
+        'total_revenue': total_revenue,  
+    }
+    
     return render(request, 'account/dash.html', context)
 
 def land(request):
     return render(request, "land.html")
 
-def login(request):
-    return render(request, "login.html")
+
+def login_view(request):
+    # Show login page for GET requests
+    if request.method != "POST":
+        return render(request, "login.html")
+    
+    # Get form data
+    username_or_email = request.POST.get("username")
+    password = request.POST.get("password")
+    
+    # Try to login with username
+    user = authenticate(request, username=username_or_email, password=password)
+    
+    # If that didn't work, check if they entered an email
+    if user is None:
+        # Look for user with this email
+        users = User.objects.filter(email=username_or_email)
+        if users:
+            # Use the first user's username to login
+            user = authenticate(request, username=users[0].username, password=password)
+    
+    # If still no user, show error
+    if user is None:
+        return render(request, "login.html", {"error": "Invalid username/email or password"})
+    
+    # Login successful
+    login(request, user)
+    
+    # Find staff record
+    staff_list = Staff.objects.filter(user=user)
+    if not staff_list:
+        return render(request, "login.html", {"error": "No staff record found"})
+    
+    # Save role in session
+    staff = staff_list[0]
+    request.session["role"] = staff.role
+    
+    # Go to correct dashboard
+    if staff.role == "admin":
+        return redirect("dash")
+    elif staff.role == "sales_attendant":
+        return redirect("sales_dash")
+    elif staff.role == "store_manager":
+        return redirect("stock_dash")
+    else:
+        return render(request, "login.html", {"error": "Invalid user role"})
+    
+
+
 
 def logout_page(request):
     return render(request, 'logout.html')
@@ -484,7 +541,7 @@ def logout_page(request):
 def stock_track(request):
     return render(request, "stock/track.html")
 
-
+#-----------------button functionality--------
 def receipt(request):
     # Get the most recent sale
     latest_sale = Sale.objects.all().order_by('-id').first()
@@ -508,3 +565,149 @@ def temp_receipt(request):
         return redirect('deposit_page')
     
     return render(request, 'account/temp_receipt.html', {'deposit': deposit_data})
+
+
+def view_supplier(request, id):
+    supplier = get_object_or_404(Supplier, id=id)
+    context = {
+        'supplier': supplier
+    }
+    return render(request,'account/view_supplier.html',context)
+
+
+def update_supplier(request, id):
+
+    supplier = get_object_or_404(Supplier, id=id)
+
+    if request.method == 'POST':
+
+        supplier.company_name = request.POST.get('company_name')
+        supplier.email = request.POST.get('email')
+        supplier.phone = request.POST.get('phone')
+        supplier.TRN = request.POST.get('TRN')
+        supplier.product_description = request.POST.get('product_description')
+        supplier.payment_option = request.POST.get('payment_option')
+        supplier.save()
+        return redirect('supplier_list')
+    context = {
+        'supplier': supplier
+    }
+    return render(request,'account/update_supplier.html', context)
+
+
+
+def delete_supplier(request, id):
+
+    supplier = get_object_or_404(Supplier, id=id)
+
+    if request.method == 'POST':
+
+        supplier.delete()
+
+        return redirect('supplier_list')
+
+
+# VIEW EMPLOYEE
+def view_employee(request, id):
+    employee = get_object_or_404(Staff, id=id)
+
+    context = {
+        'employee': employee
+    }
+
+    return render(request, 'account/view_employee.html', context)
+
+
+# UPDATE EMPLOYEE
+def update_employee(request, id):
+    employee = get_object_or_404(Staff, id=id)
+
+    if request.method == 'POST':
+        employee.name = request.POST.get('name')
+        employee.email = request.POST.get('email')
+        employee.employee_id = request.POST.get('employee_id')
+        employee.role = request.POST.get('role')
+        employee.password = request.POST.get('password')
+
+        employee.save()
+
+        return redirect('employee_table')
+
+    context = {
+        'employee': employee
+    }
+
+    return render(request, 'account/update_employee.html', context)
+
+
+# DELETE EMPLOYEE
+def delete_employee(request, id):
+    employee = get_object_or_404(Staff, id=id)
+
+    if request.method == 'POST':
+        employee.delete()
+
+        return redirect('employee_table')
+
+    return redirect('employee_table')
+
+def employee_table(request):
+    # Only admin can view employee table
+    if request.session.get("role") != "admin":
+        return redirect("login")
+    
+    # Get all staff records with their related user data
+    employees = Staff.objects.select_related('user').all().order_by('-id')
+    
+    context = {
+        'employees': employees
+    }
+    
+    return render(request, 'account/employee_table.html', context)
+
+def create_staff(request):
+    # Only admin can create staff
+    if request.session.get("role") != "admin":
+        return redirect("login")
+    
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        employee_id = request.POST.get("employee_id")
+        role = request.POST.get("role")
+        password = request.POST.get("password")
+        
+        # Check if username (email) already exists
+        if User.objects.filter(username=email).exists():
+            messages.error(request, "User with this email already exists")
+            return redirect("employee_table")
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists")
+            return redirect("employee_table")
+        
+        # Check if employee ID already exists
+        if Staff.objects.filter(employee_id=employee_id).exists():
+            messages.error(request, "Employee ID already exists")
+            return redirect("employee_table")
+        
+        # Create user (using email as username for simplicity)
+        user = User.objects.create_user(
+            username=email,  # Using email as username
+            email=email,
+            password=password,
+            first_name=name  # Store full name in first_name
+        )
+        
+        # Create staff record
+        Staff.objects.create(
+            user=user,
+            employee_id=employee_id,
+            role=role
+        )
+        
+        messages.success(request, f"Employee {name} registered successfully!")
+        return redirect("employee_table")
+    
+    return render(request, 'account/users.html')

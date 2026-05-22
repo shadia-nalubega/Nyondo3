@@ -1,253 +1,371 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
-    {% load static %}
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{% block title %} NYONDOSTOCK HARDWARE {% endblock %}</title>
+    <title>{% block title %}NYONDOSTOCK HARDWARE{% endblock %}</title>
 
-    <!-- TAILWIND CSS -->
+    <!-- TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="{% static 'account/css/stock.css' %}" />
+    <!-- LUCIDE ICONS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: #f8fafc;
+      }
+
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+
+      .card-hover:hover {
+        transform: translateY(-5px);
+      }
+
+      .sidebar-transition {
+        transition: transform 0.3s ease;
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .hide-scrollbar {
+        scrollbar-width: none;
+      }
+
+      .purple-gradient {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-100 font-sans">
+  <body class="text-slate-800">
+    <!-- MOBILE HEADER -->
+    <header
+      class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3"
+    >
+      <div class="flex items-center justify-between">
+        <button
+          onclick="toggleSidebar()"
+          class="p-2 rounded-xl hover:bg-slate-100"
+        >
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <h1 class="font-bold text-xl">NyondoStock</h1>
+
+        <div
+          class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold"
+        >
+          A
+        </div>
+      </div>
+    </header>
+
+    <!-- OVERLAY -->
+    <div
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+      class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
+    ></div>
+
     <div class="flex min-h-screen">
       <!-- SIDEBAR -->
       <aside
-        class="w-72 bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 text-white p-6"
+        id="sidebar"
+        class="fixed lg:static left-0 top-0 h-full w-72 bg-white border-r border-slate-200 z-50 sidebar-transition transform -translate-x-full lg:translate-x-0 overflow-y-auto hide-scrollbar"
       >
-        <!-- LOGO -->
-        <div
-          class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100"
-        >
-          <img
-            src="{% static 'account/css/images/NS.png' %}"
-            class="w-44 mx-auto"
-          />
+        <div class="p-6">
+          <!-- LOGO -->
+          <div
+            class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100 rounded-2xl mb-8 py-3"
+          >
+            <img
+              src="{% static 'account/css/images/NS.png' %}"
+              class="w-44 mx-auto"
+            />
+          </div>
+
+          <!-- NAVIGATION -->
+          <nav class="space-y-2">
+            <!-- DASHBOARD -->
+            <a
+              href="{% url 'stock_page' %}"
+              class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-50 text-indigo-600 font-semibold"
+            >
+              <i data-lucide="layout-dashboard"></i>
+
+              Dashboard
+            </a>
+
+            <!-- STOCK MANAGEMENT -->
+            <div class="pt-6">
+              <p class="text-xs uppercase font-bold text-slate-400 px-3 mb-3">
+                Stock Management
+              </p>
+
+              <a
+                href="{% url 'stock_page' %}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="package"></i>
+
+                Stock
+              </a>
+
+              <a
+                href="{% url 'track' %}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="search"></i>
+
+                Check Stock
+              </a>
+
+              <a
+                href="{% url 'supplier_registration' %}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="truck"></i>
+
+                Suppliers
+              </a>
+            </div>
+
+            <!-- REPORTS -->
+            <div class="pt-6">
+              <p class="text-xs uppercase font-bold text-slate-400 px-3 mb-3">
+                Reports
+              </p>
+
+              <button
+                type="button"
+                onclick="toggleReportsMenu()"
+                class="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-text"></i>
+
+                  <span>Reports</span>
+                </div>
+
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+
+              <!-- DROPDOWN -->
+              <div
+                id="reportsMenu"
+                class="hidden ml-6 mt-2 space-y-2 border-l border-slate-200 pl-4"
+              >
+                <a
+                  href="{% url 'stock_report' %}"
+                  class="block px-4 py-2 rounded-lg hover:bg-slate-100 text-slate-600"
+                >
+                  Stock Report
+                </a>
+              </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div class="pt-6">
+              <a
+                href="#"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="user"></i>
+
+                My Profile
+              </a>
+            </div>
+
+            <!-- LOGOUT -->
+            <div class="pt-6">
+              <a
+                href="{% url 'logout' %}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50"
+              >
+                <i data-lucide="log-out"></i>
+
+                Logout
+              </a>
+            </div>
+          </nav>
         </div>
-
-        <hr class="border-purple-400 mb-6" />
-
-        <!-- NAVIGATION -->
-        <h5 class="mb-4 text-lg font-semibold">Dashboard</h5>
-
-        <nav class="flex flex-col gap-2">
-          <a
-            href="{% url 'stock_page' %}"
-            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
-          >
-            STOCK
-          </a>
-
-          <a
-            href="{% url 'track' %}"
-            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
-          >
-            CHECK STOCK
-          </a>
-
-          <a
-            href="{% url 'stock_report' %}"
-            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
-          >
-            REPORT
-          </a>
-
-          <a
-            href="#"
-            class="px-4 py-3 rounded-xl hover:bg-white/20 transition duration-300"
-          >
-            MY PROFILE
-          </a>
-
-          <a
-            href="{% url 'logout' %}"
-            class="px-4 py-3 rounded-xl hover:bg-red-500/40 transition duration-300"
-          >
-            LOGOUT
-          </a>
-        </nav>
       </aside>
 
       <!-- MAIN CONTENT -->
-      <main class="flex-1 p-6">
-        <!-- TOPBAR -->
-        <div
-          class="bg-white rounded-2xl shadow-md p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8"
-        >
-          <h3 class="text-3xl font-bold">Stock Dashboard</h3>
+      <main class="flex-1 lg:ml-0 pt-20 lg:pt-8 px-4 lg:px-8 pb-8">
+        <!-- HERO -->
+        <div class="purple-gradient rounded-3xl p-8 mb-8 text-white shadow-xl">
+          <h1 class="text-4xl font-bold mb-3">Welcome To Stock</h1>
 
-          <!-- SEARCH -->
-          <form class="flex gap-2">
-            <input
-              type="search"
-              placeholder="Search stock..."
-              class="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-
-            <button
-              type="submit"
-              class="bg-purple-800 hover:bg-purple-700 text-white px-5 py-2 rounded-xl transition duration-300"
-            >
-              Search
-            </button>
-          </form>
+          <p class="text-indigo-100 max-w-2xl">
+            Manage inventory, monitor stock levels and track suppliers from one
+            professional dashboard.
+          </p>
         </div>
 
-        <!-- WELCOME -->
-        <h2 class="text-3xl font-bold text-purple-900 mb-6">
-          Welcome To Stock
-        </h2>
+        <!-- CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">Total Stock</p>
 
-        <!-- DASHBOARD CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <!-- CARD 1: Total Stock -->
-          <div
-            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
-          >
-            <h6 class="font-bold text-purple-900">Total Stock</h6>
-            <h3 class="text-3xl font-bold mt-3">{{ total_stock }}</h3>
-            <p class="text-gray-500 mt-2">Total inventory items</p>
+            <h1 class="text-4xl font-bold text-indigo-600">
+              {{ total_stock }}
+            </h1>
+
+            <p class="text-slate-400 text-xs mt-2">
+              Total inventory items
+            </p>
           </div>
 
-          <!-- CARD 2: Today's Stock -->
-          <div
-            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
-          >
-            <h6 class="font-bold text-purple-900">Today's Stock Levels</h6>
-            <h3 class="text-3xl font-bold mt-3">{{ todays_stock }}</h3>
-            <p class="text-gray-500 mt-2">Added/updated today</p>
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Today's Stock Levels
+            </p>
+
+            <h1 class="text-4xl font-bold text-orange-500">
+              {{ todays_stock }}
+            </h1>
+
+            <p class="text-slate-400 text-xs mt-2">
+              Added or updated today
+            </p>
           </div>
 
-          <!-- CARD 3: Low Stock Alerts -->
-          <div
-            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
-          >
-            <h6 class="font-bold text-purple-900">Low Stock Alerts</h6>
-            <h3 class="text-3xl font-bold mt-3">{{ low_stock }}</h3>
-            <p class="text-gray-500 mt-2">Items below 10 units</p>
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Low Stock Alerts
+            </p>
+
+            <h1 class="text-4xl font-bold text-red-500">
+              {{ low_stock }}
+            </h1>
+
+            <p class="text-slate-400 text-xs mt-2">
+              Items below threshold
+            </p>
           </div>
 
-          <!-- CARD 4: Total Value -->
-          <div
-            class="bg-white rounded-2xl shadow-md p-6 hover:-translate-y-1 transition duration-300"
-          >
-            <h6 class="font-bold text-purple-900">Total Value</h6>
-            <h3 class="text-3xl font-bold mt-3">
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Total Value
+            </p>
+
+            <h1 class="text-4xl font-bold text-green-600">
               UGX {{ total_value|floatformat:0 }}
-            </h3>
-            <p class="text-gray-500 mt-2">Total inventory worth</p>
+            </h1>
+
+            <p class="text-slate-400 text-xs mt-2">
+              Total inventory worth
+            </p>
           </div>
         </div>
 
-        <!-- QUICK ACTIONS (Separate row) -->
-        <div class="grid grid-cols-1 mb-10">
-          <div
-            class="text-black rounded-2xl shadow-md p-6 bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100"
-          >
-            <h5 class="text-xl font-bold mb-4">Quick Actions</h5>
-            <div class="flex flex-wrap gap-3">
-              <a
-                href="{% url 'stock_reg' %}"
-                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition duration-300"
-              >
-                Register Stock
-              </a>
-              <a
-                href="{% url 'supplier_registration' %}"
-                class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition duration-300"
-              >
-                New Supplier
-              </a>
-            </div>
-          </div>
-        </div>
+        <!-- QUICK ACTIONS -->
+        {% comment %} <div
+          class="mb-8 text-black rounded-3xl shadow-sm p-6 bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100"
+        >
+          <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
 
-        <!-- TABLE -->
-        <div class="bg-white rounded-2xl shadow-md p-6">
-          <!-- TABLE HEADER -->
-          <div
-            class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6"
-          >
-            <h4 class="text-2xl font-bold">Stock Records</h4>
-
+          <div class="flex flex-wrap gap-4">
             <a
               href="{% url 'stock_reg' %}"
-              class="bg-blue-800 hover:bg-purple-700 text-white px-5 py-3 rounded-xl transition duration-300"
+              class="bg-white text-black px-5 py-3 rounded-2xl font-semibold"
             >
-              + Add Stock
+              Register Stock
+            </a>
+
+            <a
+              href="{% url 'supplier_registration' %}"
+              class="bg-slate-900 text-white px-5 py-3 rounded-2xl font-semibold"
+            >
+              New Supplier
             </a>
           </div>
+        </div> {% endcomment %}
 
+        <!-- TABLE -->
+        <div class="bg-gray rounded-3xl p-6 shadow-sm border border-slate-100">
+          
           <!-- TABLE -->
           <div class="overflow-x-auto">
-            <table
-              class="min-w-full border border-gray-200 rounded-xl overflow-hidden"
-            >
-              <!-- TABLE HEAD -->
-              <thead class="bg-gray-900 text-white">
-                <tr>
-                  <th class="px-4 py-3 text-center">Product ID</th>
-
-                  <th class="px-4 py-3 text-center">Description</th>
-
-                  <th class="px-4 py-3 text-center">Quantity</th>
-
-                  <th class="px-4 py-3 text-center">Unit Price</th>
-
-                  <th class="px-4 py-3 text-center">Supplier Name</th>
-
-                  <th class="px-4 py-3 text-center">Date</th>
-
-                  <th class="px-4 py-3 text-center">Action</th>
+            <table class="w-full min-w-[1000px]">
+             <thead class="bg-gray-900 text-white">
+                <tr class="border-b border-slate-200">
+                  <th class="text-left py-4">Product ID</th>
+                  <th class="text-left py-4">Description</th>
+                  <th class="text-left py-4">Quantity</th>
+                  <th class="text-left py-4">Unit Price</th>
+                  <th class="text-left py-4">Supplier</th>
+                  <th class="text-left py-4">Date</th>
+                  <th class="text-left py-4">Action</th>
                 </tr>
               </thead>
 
-              <!-- TABLE BODY -->
-              <tbody class="divide-y divide-gray-200 bg-white">
+              <tbody>
                 {% for stock in stock_items %}
 
-                <tr>
-                  <td class="px-4 py-3 text-center">{{ stock.product_id }}</td>
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                  <td class="py-4">{{ stock.product_id }}</td>
 
-                  <td class="px-4 py-3 text-center">{{ stock.description }}</td>
+                  <td>{{ stock.description }}</td>
 
-                  <td class="px-4 py-3 text-center">{{ stock.quantity }}</td>
+                  <td>{{ stock.quantity }}</td>
 
-                  <td class="px-4 py-3 text-center">{{ stock.cost_price }}</td>
+                  <td>{{ stock.cost_price }}</td>
 
-                  <td class="px-4 py-3 text-center">{{ stock.supplier }}</td>
+                  <td>{{ stock.supplier }}</td>
 
-                  <td class="px-4 py-3 text-center">{{ stock.date }}</td>
+                  <td>{{ stock.date }}</td>
 
-                  <!-- ACTION BUTTONS -->
-                  <td class="px-4 py-3">
-                    <!-- ACTION BUTTONS - Replace your current buttons with these -->
-
-                    <div class="flex justify-center gap-2">
-                      <!-- VIEW Button -->
+                  <td class="py-4">
+                    <div class="flex gap-2">
                       <a
                         href="{% url 'view_stock' stock.id %}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                        class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm"
                       >
                         View
                       </a>
 
-                      <!-- UPDATE Button -->
                       <a
                         href="{% url 'update_stock' stock.id %}"
-                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                        class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
                       >
                         Update
                       </a>
 
-                      <!-- DELETE Button -->
                       <a
                         href="{% url 'delete_stock' stock.id %}"
-                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm transition"
+                        class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm"
                       >
                         Delete
                       </a>
@@ -258,7 +376,7 @@
                 {% empty %}
 
                 <tr>
-                  <td colspan="8" class="text-center text-gray-500 py-6">
+                  <td colspan="7" class="text-center py-6 text-slate-500">
                     No stock records found.
                   </td>
                 </tr>
@@ -270,5 +388,28 @@
         </div>
       </main>
     </div>
+
+    <script>
+      lucide.createIcons();
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        if (sidebar.classList.contains("-translate-x-full")) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+        }
+      }
+
+      function toggleReportsMenu() {
+        const menu = document.getElementById("reportsMenu");
+
+        menu.classList.toggle("hidden");
+      }
+    </script>
   </body>
 </html>

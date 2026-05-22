@@ -1,287 +1,371 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
-    {% load static %}
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>{% block title %} NYONDOSTOCK HARDWARE {% endblock %}</title>
+    <title>{% block title %}NYONDOSTOCK SALES{% endblock %}</title>
 
-    <!-- Tailwind CSS -->
+    <!-- TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- LUCIDE ICONS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: #f8fafc;
+      }
+
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+
+      .card-hover:hover {
+        transform: translateY(-5px);
+      }
+
+      .sidebar-transition {
+        transition: transform 0.3s ease;
+      }
+
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .hide-scrollbar {
+        scrollbar-width: none;
+      }
+
+      .purple-gradient {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-100">
+  <body class="text-slate-800">
+    <!-- MOBILE HEADER -->
+    <header
+      class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3"
+    >
+      <div class="flex items-center justify-between">
+        <button
+          onclick="toggleSidebar()"
+          class="p-2 rounded-xl hover:bg-slate-100"
+        >
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <h1 class="font-bold text-xl">NyondoStock</h1>
+
+        <div
+          class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold"
+        >
+          A
+        </div>
+      </div>
+    </header>
+
+    <!-- OVERLAY -->
+    <div
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+      class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
+    ></div>
+
     <div class="flex min-h-screen">
       <!-- SIDEBAR -->
       <aside
-        class="hidden md:block w-64 bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 min-h-screen"
+        id="sidebar"
+        class="fixed lg:static left-0 top-0 h-full w-72 bg-white border-r border-slate-200 z-50 sidebar-transition transform -translate-x-full lg:translate-x-0 overflow-y-auto hide-scrollbar"
       >
-        <!-- LOGO -->
-         <div
-          class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100 mt-4"
-        >
-          <img
-            src="{% static 'account/css/images/NS.png' %}"
-            class="w-44 mx-auto"
-          />
-        </div>
-
-        <!-- NAVIGATION -->
-        <nav class="text-sm text-gray-300 mt-6">
-          <ul class="flex flex-col">
-            <!-- DASHBOARD -->
-            <li class="px-4 bg-gray-700 text-white">
-              <a class="py-3 flex items-center" href="{% url 'sales_page' %}">
-                Dashboard
-              </a>
-            </li>
-
-            <!-- SECTION -->
-            <li
-              class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold"
-            >
-              SALES MANAGEMENT
-            </li>
-
-            <!-- SALES -->
-            <li class="px-4 hover:bg-gray-700">
-              <a class="py-3 flex items-center" href="{% url 'sales_page' %}"> Sales </a>
-            </li>
-
-            <!-- CHECK STOCK -->
-            <li class="px-4 hover:bg-gray-700">
-              <a class="py-3 flex items-center" href="{% url 'track' %}"> Check Stock </a>
-            </li>
-
-            <!-- RECEIPTS -->
-            <li class="px-4 hover:bg-gray-700">
-              <a class="py-3 flex items-center" href=""> Receipts </a>
-            </li>
-
-            <!-- REPORTS -->
-            <li class="px-4 hover:bg-gray-700">
-              <a class="py-3 flex items-center" href="{% url 'sales_report' %}"> Reports </a>
-            </li>
-
-            <!-- PROFILE -->
-            <li class="px-4 hover:bg-gray-700">
-              <a class="py-3 flex items-center" href="#"> My Profile </a>
-            </li>
-
-            <!-- LOGOUT -->
-            <li class="px-4 hover:bg-red-700">
-              <a class="py-3 flex items-center" href="{% url 'logout' %}"> Logout </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="flex-1">
-        <!-- TOP NAVBAR -->
-        <nav
-          class="bg-white shadow-sm px-6 py-4 flex justify-between items-center"
-        >
-          <h1 class="text-2xl font-bold text-gray-700">Dashboard</h1>
-
-          <!-- SEARCH -->
-          <form class="flex gap-2">
-            <input
-              type="search"
-              placeholder="Search"
-              class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
-            />
-
-            <button
-              type="submit"
-              class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
-            >
-              Search
-            </button>
-          </form>
-        </nav>
-
-        <!-- PAGE CONTENT -->
         <div class="p-6">
-          <!-- WELCOME -->
-          <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-700">Welcome To Sales</h2>
-
-            <p class="text-gray-500 mt-1">
-              Overview of your daily business activities
-            </p>
+          <!-- LOGO -->
+          <div
+            class="text-center bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100 rounded-2xl mb-8 py-3"
+          >
+            <img
+              src="{% static 'account/css/images/NS.png' %}"
+              class="w-44 mx-auto"
+            />
           </div>
 
-          <!-- CARDS -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <!-- CARD 1: Today's Sales -->
-    <div class="bg-white rounded-2xl shadow p-5">
-        <h4 class="text-gray-500 text-sm">Today's Sales</h4>
-        <h1 class="text-3xl font-bold mt-3 text-gray-800">
-            {{ today_sales_total|floatformat:0 }} 
-        </h1>
-        <div class="mt-4">
-            <img src="{% static 'account/css/images/sales.png' %}" class="w-20" />
-        </div>
-    </div>
+          <!-- NAVIGATION -->
+          <nav class="space-y-2">
+            <!-- DASHBOARD -->
+            <a
+              href="{% url 'sales_page' %}"
+              class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-indigo-50 text-indigo-600 font-semibold"
+            >
+              <i data-lucide="layout-dashboard"></i>
 
-    <!-- CARD 2: Today's Deposits -->
-    <div class="bg-white rounded-2xl shadow p-5">
-        <h4 class="text-gray-500 text-sm">Today's Deposits</h4>
-        <h1 class="text-3xl font-bold mt-3 text-gray-800">
-            {{ today_deposits_total|floatformat:0 }} 
-        </h1>
-        <div class="mt-4">
-            <img src="{% static 'account/css/images/deposit.png' %}" class="w-20" />
-        </div>
-        <p class="text-sm text-gray-400 mt-3">Awaiting fulfillment</p>
-    </div>
+              Dashboard
+            </a>
 
-    <!-- CARD 3: Complete Receipts -->
-    <div class="bg-white rounded-2xl shadow p-5">
-        <h4 class="text-gray-500 text-sm">Complete Receipts</h4>
-        <h1 class="text-3xl font-bold mt-3 text-gray-800">
-            {{ complete_receipts }}
-        </h1>
-        <div class="mt-4">
-            <img src="{% static 'account/css/images/receipt.png' %}" class="w-20" />
-        </div>
-        <p class="text-sm text-gray-400 mt-3">Total sales completed</p>
-    </div>
-
-    <!-- CARD 4: Pending Receipts -->
-    <div class="bg-white rounded-2xl shadow p-5">
-        <h4 class="text-gray-500 text-sm">Pending Receipts</h4>
-        <h1 class="text-3xl font-bold mt-3 text-gray-800">
-            {{ pending_receipts }}
-        </h1>
-        <div class="mt-4">
-            <img src="{% static 'account/css/images/pending.png' %}" class="w-20" />
-        </div>
-        <p class="text-sm text-gray-400 mt-3">Awaiting completion</p>
-    </div>
-</div>
-          <!-- QUICK ACTIONS -->
-          <div
-            class="mt-10 bg-gradient-to-r from-purple-900 via-purple-700 to-indigo-800 rounded-2xl shadow p-6 text-white"
-          >
-            <h3 class="text-xl font-bold mb-4">QUICK ACTIONS</h3>
-
-            <div class="flex flex-wrap gap-4">
-              <a
-                href="{% url 'sales_report' %}"
-                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
-              >
-                View report
-              </a>
+            <!-- SALES MANAGEMENT -->
+            <div class="pt-6">
+              <p class="text-xs uppercase font-bold text-slate-400 px-3 mb-3">
+                Sales Management
+              </p>
 
               <a
                 href="{% url 'sales_reg' %}"
-                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
               >
-              Register Sale
+                <i data-lucide="shopping-cart"></i>
+
+                Register Sale
               </a>
 
               <a
                 href="{% url 'track' %}"
-                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
               >
-              View Stock
+                <i data-lucide="package-search"></i>
+
+                Check Stock
+              </a>
+
+              <a
+                href="#"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="receipt"></i>
+
+                Receipts
               </a>
             </div>
+
+            <!-- REPORTS -->
+            <div class="pt-6">
+              <p class="text-xs uppercase font-bold text-slate-400 px-3 mb-3">
+                Reports
+              </p>
+
+              <button
+                type="button"
+                onclick="toggleReportsMenu()"
+                class="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-text"></i>
+
+                  <span>Reports</span>
+                </div>
+
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+
+              <!-- DROPDOWN -->
+              <div
+                id="reportsMenu"
+                class="hidden ml-6 mt-2 space-y-2 border-l border-slate-200 pl-4"
+              >
+                <a
+                  href="{% url 'sales_report' %}"
+                  class="block px-4 py-2 rounded-lg hover:bg-slate-100 text-slate-600"
+                >
+                  Sales Report
+                </a>
+              </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div class="pt-6">
+              <a
+                href="#"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100"
+              >
+                <i data-lucide="user"></i>
+
+                My Profile
+              </a>
+            </div>
+
+            <!-- LOGOUT -->
+            <div class="pt-6">
+              <a
+                href="{% url 'logout' %}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50"
+              >
+                <i data-lucide="log-out"></i>
+
+                Logout
+              </a>
+            </div>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 lg:ml-0 pt-20 lg:pt-8 px-4 lg:px-8 pb-8">
+        <!-- HERO -->
+        <div class="purple-gradient rounded-3xl p-8 mb-8 text-white shadow-xl">
+          <h1 class="text-4xl font-bold mb-3">Welcome To Sales</h1>
+
+          <p class="text-indigo-100 max-w-2xl">
+            Manage sales transactions, monitor receipts and track customer
+            purchases from one professional dashboard.
+          </p>
+        </div>
+
+        <!-- CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">Today's Sales</p>
+
+            <h1 class="text-4xl font-bold text-indigo-600">
+              {{ today_sales_total|floatformat:0 }}
+            </h1>
+
+            <p class="text-slate-400 text-xs mt-2">
+              Sales recorded today
+            </p>
           </div>
 
-          <!-- SALES TABLE -->
-          <div class="mt-10 bg-white rounded-2xl shadow p-6">
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-2xl font-bold text-gray-700">Sales Page</h3>
-            </div>
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Today's Deposits
+            </p>
 
-            <div class="overflow-x-auto">
-              <table class="min-w-full">
-                <!-- TABLE HEAD -->
-                <thead class="bg-gray-100">
-                  <tr>
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Date
-                    </th>
+            <h1 class="text-4xl font-bold text-orange-500">
+              {{ today_deposits_total|floatformat:0 }}
+            </h1>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Product
-                    </th>
+            <p class="text-slate-400 text-xs mt-2">
+              Deposits received
+            </p>
+          </div>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Quantity
-                    </th>
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Complete Receipts
+            </p>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Price
-                    </th>
+            <h1 class="text-4xl font-bold text-green-600">
+              {{ complete_receipts }}
+            </h1>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Total
-                    </th>
+            <p class="text-slate-400 text-xs mt-2">
+              Successful transactions
+            </p>
+          </div>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Customer
-                    </th>
+          <!-- CARD -->
+          <div class="bg-white p-6 rounded-3xl shadow-sm card-hover">
+            <p class="text-slate-500 text-sm mb-2">
+              Pending Receipts
+            </p>
 
-                    <th
-                      class="px-4 py-3 text-left text-sm font-semibold text-gray-600"
-                    >
-                      Payment
-                    </th>
-                  </tr>
-                </thead>
+            <h1 class="text-4xl font-bold text-red-500">
+              {{ pending_receipts }}
+            </h1>
 
-                <!-- TABLE BODY -->
-                <tbody class="divide-y divide-gray-200">
-                  {% for sale in new_sale %}
+            <p class="text-slate-400 text-xs mt-2">
+              Awaiting completion
+            </p>
+          </div>
+        </div>
 
-                  <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3">{{ sale.date }}</td>
+        <!-- TABLE -->
+        <div class="bg-gray rounded-3xl p-6 shadow-sm border border-slate-100">
+          <!-- TABLE -->
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[1000px]">
+              <thead class="bg-gray-900 text-white">
+                <tr class="border-b border-slate-200">
+                  <th class="text-left py-4 px-4">Date</th>
+                  <th class="text-left py-4 px-4">Product</th>
+                  <th class="text-left py-4 px-4">Quantity</th>
+                  <th class="text-left py-4 px-4">Price</th>
+                  <th class="text-left py-4 px-4">Total</th>
+                  <th class="text-left py-4 px-4">Customer</th>
+                  <th class="text-left py-4 px-4">Payment</th>
+                </tr>
+              </thead>
 
-                    <td class="px-4 py-3">{{ sale.product_name }}</td>
+              <tbody>
+                {% for sale in new_sale %}
 
-                    <td class="px-4 py-3">{{ sale.quantity }}</td>
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                  <td class="py-4 px-4">{{ sale.date }}</td>
 
-                    <td class="px-4 py-3">{{ sale.selling_price }}</td>
+                  <td class="px-4">{{ sale.product_name }}</td>
 
-                    <td class="px-4 py-3">{{ sale.total_amount }}</td>
+                  <td class="px-4">{{ sale.quantity }}</td>
 
-                    <td class="px-4 py-3">{{ sale.customer_name }}</td>
+                  <td class="px-4">{{ sale.selling_price }}</td>
 
-                    <td class="px-4 py-3">{{ sale.payment }}</td>
-                  </tr>
+                  <td class="px-4 text-green-600 font-semibold">
+                    {{ sale.total_amount }}
+                  </td>
 
-                  {% empty %}
+                  <td class="px-4">{{ sale.customer_name }}</td>
 
-                  <tr>
-                    <td colspan="7" class="text-center py-6 text-gray-500">
-                      No sales yet
-                    </td>
-                  </tr>
+                  <td class="px-4">{{ sale.payment }}</td>
+                </tr>
 
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+                {% empty %}
+
+                <tr>
+                  <td colspan="7" class="text-center py-6 text-slate-500">
+                    No sales records found.
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </main>
     </div>
+
+    <script>
+      lucide.createIcons();
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        if (sidebar.classList.contains("-translate-x-full")) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.remove("hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+        }
+      }
+
+      function toggleReportsMenu() {
+        const menu = document.getElementById("reportsMenu");
+
+        menu.classList.toggle("hidden");
+      }
+    </script>
   </body>
 </html>

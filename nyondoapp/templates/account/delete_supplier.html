@@ -1,0 +1,14 @@
+<form
+  method="POST"
+  action="{% url 'delete_supplier' supplier.id %}"
+  onsubmit="return confirm('Are you sure you want to delete this supplier?')"
+>
+  {% csrf_token %}
+
+  <button
+    type="submit"
+    class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm"
+  >
+    Delete
+  </button>
+</form>

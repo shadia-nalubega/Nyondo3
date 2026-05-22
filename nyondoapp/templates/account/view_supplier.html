@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Supplier</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-primary mb-4">
+            Supplier Details
+        </h2>
+
+        <hr>
+
+        <p><strong>Company Name:</strong> {{ supplier.company_name }}</p>
+
+        <p><strong>TRN:</strong> {{ supplier.TRN }}</p>
+
+        <p><strong>Location:</strong> {{ supplier.location }}</p>
+
+        <p><strong>Email:</strong> {{ supplier.email }}</p>
+
+        <p><strong>Phone:</strong> {{ supplier.phone }}</p>
+
+        <p><strong>Description:</strong> {{ supplier.product_description }}</p>
+
+        <p><strong>Payment Option:</strong> {{ supplier.payment_option }}</p>
+
+        <a
+          href="{% url 'supplier_list' %}"
+          class="btn btn-secondary mt-3"
+        >
+            Back
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

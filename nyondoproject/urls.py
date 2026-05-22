@@ -19,8 +19,7 @@ from django.urls import path
 from nyondoapp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),   
     path('dash', views.dash, name='dash'),
     path('supplier/registration/', views.supplier_registration, name='supplier_registration'),
     path('supplier/list/', views.supplier_list, name='supplier_list'),
@@ -35,7 +34,7 @@ urlpatterns = [
     path('sales/', views.sales_page, name='sales_page'),
     path('sales/register/', views.sales_reg, name='sales_reg'),
     path('', views.land, name="land"),
-    path('login', views.login, name="login"),   
+    path('login/', views.login_view, name="login"),   
     path('customer_deposit/', views.customer_deposit, name="customer_deposit"),  
     path('customer_page/', views.customer_page, name="customer_page"),
     path('deposit_page/', views.deposit_page, name="deposit_page"),       
@@ -50,4 +49,13 @@ urlpatterns = [
     path('stock/delete/<int:pk>/', views.delete_stock, name='delete_stock'),
     path('receipt/', views.receipt, name='receipt'),
     path('receipt/temp/', views.temp_receipt, name='temp_receipt'),
+    path('supplier/view/<int:id>/', views.view_supplier, name='view_supplier'),
+    path('supplier/delete/<int:id>/', views.delete_supplier, name='delete_supplier'),
+    path('supplier/update/<int:id>/', views.update_supplier, name='update_supplier'),
+    path('employee_table/', views.employee_table, name='employee_table'),
+    path('view_employee/<int:id>/', views.view_employee, name='view_employee'),
+    path('update_employee/<int:id>/', views.update_employee, name='update_employee'),
+    path('delete_employee/<int:id>/', views.delete_employee, name='delete_employee'),
+    path('users/', views.create_staff, name='users'),
+
 ]

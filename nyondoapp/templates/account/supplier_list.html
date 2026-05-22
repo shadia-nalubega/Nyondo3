@@ -1,192 +1,148 @@
 <!doctype html>
 <html lang="en">
-<head>
-  {% load static %}
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NyondoStock · Supplier List</title>
-  
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-    crossorigin="anonymous"
-  />
-  
-  <style>
-    body {
-      background: #f4f7fc;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    
-    .page {
-      padding: 30px;
-    }
-    
-    .header h1 {
-      color: #0d6efd;
-      font-weight: bold;
-      text-align: center;
-    }
-    
-    .header h4 {
-      color: #6c757d;
-      text-align: center;
-    }
-    
-    .table-container {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      margin-top: 25px;
-    }
-    
-    table th {
-      background-color: #0d6efd !important;
-      color: white !important;
-      text-align: center;
-    }
-    
-    table td {
-      vertical-align: middle;
-      text-align: center;
-    }
-    
-    .buttons {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-    
-    .summary-box {
-      margin-top: 25px;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-    
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-    
-    .summary-card {
-      background: #f8f9fa;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      border-left: 5px solid #0d6efd;
-    }
-    
-    .summary-card h5 {
-      color: #6c757d;
-      margin-bottom: 10px;
-    }
-    
-    .summary-card p {
-      font-size: 20px;
-      font-weight: bold;
-      color: #0d6efd;
-      margin: 0;
-    }
-    
-    .btn-sm-action {
-      margin: 0 4px;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.75rem;
-    }
-    
-    @media (max-width: 768px) {
-      .buttons {
-        flex-direction: column;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="page card">
-    <!-- Header -->
-    <div class="header">
-      <h1>NYONDOSTOCK</h1>
-      <h4>Supplier List</h4>
-    </div>
-    <hr />
+  <head>
+    <meta charset="UTF-8" />
 
-    <!-- Table Section -->
-    <div class="table-container">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-          <thead>
-            <tr>
-              <th>Company Name</th>
-              <th>TRN</th>
-              <th>Product Description</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Payment Option</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for supplier in suppliers %}
-            <tr>
-              <td>{{ supplier.company_name }}</td>
-              <td>{{ supplier.TRN }}</td>
-              <td>{{ supplier.product_description }}</td>
-              <td>{{ supplier.phone }}</td>
-              <td>{{ supplier.email }}</td>
-              <td>{{ supplier.payment_option }}</td>
-              <td>
-                <div class="btn-group btn-group-sm" role="group">
-                  <button class="btn btn-outline-primary btn-sm-action">View</button>
-                  <button class="btn btn-outline-secondary btn-sm-action">Update</button>
-                  <button class="btn btn-outline-danger btn-sm-action">Delete</button>
-                </div>
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="7" class="text-center text-muted py-4">
-                No suppliers registered yet.
-               </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Summary Box -->
-    <div class="summary-box">
-      <div >
-        <div >
-          <h5>Total Suppliers</h5>
-          <p>{{ suppliers.count }}</p>
+    <title>Supplier List</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="text-slate-800">
+    <div class="min-h-screen p-4 lg:p-8">
+      <!-- TOP NAVBAR -->
+      <nav
+        class="bg-white rounded-3xl shadow-sm border border-slate-100 p-4 mb-8"
+      >
+        <div
+          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+        >
+          <!-- LEFT -->
+          <div>
+            <h2 class="text-3xl font-bold text-slate-800">NyondoStock</h2>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="flex flex-wrap gap-3">
+            <a
+              href="{% url 'supplier_credit_table' %}"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-2xl font-semibold transition"
+            >
+              Credit Records
+            </a>
+
+            <a
+              href="{% url 'supplier_registration' %}"
+              class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-2xl font-semibold transition"
+            >
+              Register Supplier
+            </a>
+
+            <a
+              href="{% url 'supplier_credit_register' %}"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-2xl font-semibold transition"
+            >
+              Register Credit
+            </a>
+          </div>
         </div>
-        <div >
-          <h5>Total Value</h5>
-          <p>--</p>
+      </nav>
+
+      <!-- TABLE -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[900px]">
+            <thead class="bg-gray-900 text-white">
+              <tr class="border-b border-slate-200">
+                <th class="text-left py-4">Company</th>
+                <th class="text-left py-4">TRN</th>
+                <th class="text-left py-4">Description</th>
+                <th class="text-left py-4">Phone</th>
+                <th class="text-left py-4">Email</th>
+                <th class="text-left py-4">Payment</th>
+                <th class="text-left py-4">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for supplier in suppliers %}
+
+              <tr class="border-b border-slate-100 hover:bg-slate-50">
+                <td class="py-4">{{ supplier.company_name }}</td>
+
+                <td>{{ supplier.TRN }}</td>
+
+                <td>{{ supplier.product_description }}</td>
+
+                <td>{{ supplier.phone }}</td>
+
+                <td>{{ supplier.email }}</td>
+
+                <td>{{ supplier.payment_option }}</td>
+
+                <td class="py-4">
+                  <div class="flex gap-2">
+                    <a
+                      href="{% url 'view_supplier' supplier.id %}"
+                      class="bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm"
+                    >
+                      View
+                    </a>
+
+                    <a
+                      href="{% url 'update_supplier' supplier.id %}"
+                      class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+                    >
+                      Update
+                    </a>
+
+                    <form
+                      method="POST"
+                      action="{% url 'delete_supplier' supplier.id %}"
+                      onsubmit="
+                        return confirm(
+                          'Are you sure you want to delete this supplier?',
+                        );
+                      "
+                    >
+                      {% csrf_token %}
+
+                      <button
+                        type="submit"
+                        class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+
+              {% empty %}
+
+              <tr>
+                <td colspan="7" class="text-center py-6 text-slate-500">
+                  No suppliers registered yet.
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="buttons d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'dash' %}" class="btn btn-secondary px-4">Back</a>
+      </div>
     </div>
-
-    <!-- Buttons -->
-    <div class="buttons">
-      <a href="{% url 'supplier_registration' %}" class="btn btn-primary px-4 py-2">Register Supplier</a>
-      <a href="{% url 'supplier_credit_register' %}" class="btn btn-success px-4 py-2">Supplier Credit</a>
-    </div>
-  </div>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"
-  ></script>
-</body>
+  </body>
 </html>

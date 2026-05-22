@@ -1,253 +1,211 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Temporary Receipt - NyondoStock</title>
+
+    <title>Temporary Receipt - NYONDOSTOCK</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- GOOGLE FONT -->
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
     />
+
     <style>
-        @media print {
-            .no-print {
-                display: none;
-            }
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: #eef4ff;
+      }
+
+      @media print {
+        .no-print {
+          display: none;
         }
+
         body {
-            background: #f4f7fc;
-            font-family: Arial, Helvetica, sans-serif;
+          background: white;
         }
-        .receipt {
-            max-width: 550px;
-            margin: 30px auto;
-            padding: 25px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+        .receipt-card {
+          box-shadow: none;
+          border: none;
         }
-        .header {
-            text-align: center;
-            border-bottom: 3px solid #0d6efd;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .header h3 {
-            color: #0d6efd;
-            font-weight: bold;
-            margin: 0;
-        }
-        .header p {
-            font-size: 12px;
-            color: #666;
-            margin: 5px 0;
-        }
-        .not-final {
-            background-color: #ffc107;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            color: #856404;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .pending-card {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-            margin: 15px 0;
-        }
-        .pending-card h5 {
-            color: #856404;
-            margin: 0;
-            font-weight: bold;
-        }
-        .info-row {
-            display: flex;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .info-label {
-            font-weight: bold;
-            width: 40%;
-            color: #555;
-        }
-        .info-value {
-            width: 60%;
-            color: #333;
-        }
-        .section-title {
-            background: #0d6efd;
-            color: white;
-            padding: 10px 15px;
-            font-weight: bold;
-            border-radius: 5px 5px 0 0;
-            margin: 20px 0 0 0;
-        }
-        .section-content {
-            border: 1px solid #ddd;
-            border-top: none;
-            padding: 15px;
-            border-radius: 0 0 5px 5px;
-            background: #fafafa;
-        }
-        .amount-highlight {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .text-success {
-            color: #28a745 !important;
-        }
-        .text-danger {
-            color: #dc3545 !important;
-        }
-        .alert-warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            border-radius: 5px;
-            padding: 12px;
-            margin-top: 20px;
-        }
-        .button {
-            text-align: center;
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .btn {
-            padding: 10px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background: #0d6efd;
-            border: none;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #0b5ed7;
-        }
-        .btn-secondary {
-            background: #6c757d;
-            border: none;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        .footer-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 11px;
-            color: #999;
-        }
+      }
     </style>
-</head>
-<body>
-    <div class="receipt">
-        <!-- HEADER -->
-        <div class="header">
-            <h3>NYONDOSTOCK HARDWARE</h3>
-            <p>Kampala, Uganda | Tel: 0770 000 000</p>
-            <div class="not-final">TEMPORARY RECEIPT - NOT FINAL</div>
+  </head>
+
+  <body class="py-6 px-3 text-slate-800">
+    <!-- RECEIPT -->
+    <div
+      class="receipt-card max-w-sm mx-auto bg-white rounded-2xl shadow border border-blue-100 overflow-hidden"
+    >
+      <!-- HEADER -->
+      <div class="bg-blue-600 text-white px-5 py-4">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-xl font-bold tracking-wide">
+              NYONDOSTOCK
+            </h1>
+
+            <p class="text-blue-100 text-xs mt-1">
+              Temporary Deposit Receipt
+            </p>
+          </div>
+
+          <div
+            class="bg-yellow-300 text-yellow-900 px-3 py-1 rounded-lg text-[10px] font-bold"
+          >
+            PENDING
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="p-5 text-sm">
+        <!-- INFO -->
+        <div class="grid grid-cols-2 gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <p class="text-slate-500 text-xs">Receipt No</p>
+
+            <h3 class="font-semibold">
+              #DEP-{{ deposit.receipt_no }}
+            </h3>
+          </div>
+
+          <div>
+            <p class="text-slate-500 text-xs">Date</p>
+
+            <h3 class="font-semibold">
+              {{ deposit.date }}
+            </h3>
+          </div>
+
+          <div>
+            <p class="text-slate-500 text-xs">Customer</p>
+
+            <h3 class="font-semibold">
+              {{ deposit.customer_name }}
+            </h3>
+          </div>
+
+          <div>
+            <p class="text-slate-500 text-xs">Phone</p>
+
+            <h3 class="font-semibold">
+              {{ deposit.phone }}
+            </h3>
+          </div>
         </div>
 
-        <!-- RECEIPT INFO -->
-        <div class="section-title">RECEIPT INFORMATION</div>
-        <div class="section-content">
-            <div class="info-row">
-                <div class="info-label">Receipt No:</div>
-                <div class="info-value"><strong>#DEP-{{ deposit.receipt_no }}</strong></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Date:</div>
-                <div class="info-value">{{ deposit.date }}</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Time:</div>
-                <div class="info-value">{% now "h:i A" %}</div>
-            </div>
+        <!-- TABLE -->
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-blue-600 text-white">
+              <tr>
+                <th class="text-left px-3 py-2">Product</th>
+
+                <th class="text-left px-3 py-2">Total</th>
+
+                <th class="text-left px-3 py-2">Deposit</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr class="border-b border-slate-200">
+                <td class="px-3 py-3">
+                  {{ deposit.product_name }}
+                </td>
+
+                <td class="px-3 py-3">
+                  UGX {{ deposit.total_price|floatformat:0 }}
+                </td>
+
+                <td class="px-3 py-3 text-green-600 font-semibold">
+                  UGX {{ deposit.deposit_amount|floatformat:0 }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- PENDING STATUS -->
-        <div class="pending-card">
-            <h5>PENDING COMPLETION</h5>
-            <div style="margin-top: 5px;">Balance Due: <strong class="text-danger">{{ deposit.remaining_balance }} UGX</strong></div>
+        <!-- BALANCE -->
+        <div
+          class="mt-5 bg-red-50 border border-red-100 rounded-xl p-4"
+        >
+          <div class="flex justify-between items-center">
+            <span class="font-medium text-slate-700">
+              Remaining Balance
+            </span>
+
+            <span class="text-red-500 font-bold text-lg">
+              UGX {{ deposit.remaining_balance|floatformat:0 }}
+            </span>
+          </div>
         </div>
 
-        <!-- CUSTOMER INFORMATION -->
-        <div class="section-title">CUSTOMER INFORMATION</div>
-        <div class="section-content">
-            <div class="info-row">
-                <div class="info-label">Customer Name:</div>
-                <div class="info-value"><strong>{{ deposit.customer_name }}</strong></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Phone:</div>
-                <div class="info-value">{{ deposit.phone }}</div>
-            </div>
+        <!-- DETAILS -->
+        <div class="mt-5 space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-slate-500">
+              Received By
+            </span>
+
+            <span class="font-medium">
+              {{ deposit.received_by }}
+            </span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="text-slate-500">
+              Completion Date
+            </span>
+
+            <span class="font-medium">
+              {{ deposit.expected_completion }}
+            </span>
+          </div>
         </div>
 
-        <!-- PRODUCT INFORMATION -->
-        <div class="section-title">PRODUCT INFORMATION</div>
-        <div class="section-content">
-            <div class="info-row">
-                <div class="info-label">Product:</div>
-                <div class="info-value"><strong>{{ deposit.product_name }}</strong></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Total Price:</div>
-                <div class="info-value">{{ deposit.total_price }} UGX</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Deposit Paid:</div>
-                <div class="info-value"><strong class="text-success">{{ deposit.deposit_amount }} UGX</strong></div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Remaining Balance:</div>
-                <div class="info-value"><strong class="text-danger amount-highlight">{{ deposit.remaining_balance }} UGX</strong></div>
-            </div>
-        </div>
-
-        <!-- PAYMENT DETAILS -->
-        <div class="section-title">PAYMENT DETAILS</div>
-        <div class="section-content">
-            <div class="info-row">
-                <div class="info-label">Received By:</div>
-                <div class="info-value">{{ deposit.received_by }}</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label">Expected Completion:</div>
-                <div class="info-value">{{ deposit.expected_completion }}</div>
-            </div>
-        </div>
-
-        <!-- IMPORTANT NOTICE -->
-        <div class="alert-warning">
-            <strong>IMPORTANT NOTICE:</strong><br>
-            This is a temporary receipt for your deposit.<br>
-            Please keep it safe and present it when completing your purchase.<br>
-            <strong>Stock will be released upon full payment.</strong>
+        <!-- NOTICE -->
+        <div
+          class="mt-5 bg-blue-50 border border-blue-100 rounded-xl p-4 text-xs text-slate-600 leading-relaxed"
+        >
+          Please keep this receipt safe and present it when
+          completing payment. Stock will only be released after
+          full payment.
         </div>
 
         <!-- FOOTER -->
-        <div class="footer-text">
-            Thank you for your business!<br>
-            Goods sold are not returnable
+        <div
+          class="mt-5 pt-4 border-t border-slate-200 text-center text-xs text-slate-500"
+        >
+          Thank you for your business
         </div>
 
         <!-- BUTTONS -->
-        <div class="button no-print">
-            <button class="btn btn-primary" onclick="window.print()">PRINT RECEIPT</button>
-            <a href="{% url 'deposit_page' %}" class="btn btn-secondary">EXIT</a>
-        </div>
-    </div>
+        <div
+          class="no-print mt-5 flex justify-center gap-3"
+        >
+          <button
+            onclick="window.print()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold transition"
+          >
+            Print
+          </button>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+          <a
+            href="{% url 'deposit_page' %}"
+            class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2 rounded-xl text-sm font-semibold transition"
+          >
+            Exit
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

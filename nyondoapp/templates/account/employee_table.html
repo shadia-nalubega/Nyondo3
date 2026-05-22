@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Records</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #f8fafc; }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-sm border-b border-slate-200">
+    <div class="w-full mx-auto px-6 py-4 flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-slate-900">NYONDOSTOCK</h2>
+      <div class="flex gap-3">
+        <a href="{% url 'users' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl transition">+ Add Employee</a>
+        <a href="{% url 'dash' %}" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl transition">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="max-w-6xl mx-auto p-6">
+    <!-- HEADING -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold text-slate-800">Employee Records</h1>
+      <p class="text-slate-500 mt-2">Manage registered system employees.</p>
+    </div>
+
+    <!-- TABLE -->
+    <div class="w_full bg-white rounded-xl shadow-sm border border-slate-200 ">
+      <div >
+        <table class="w-full border-collapse">
+          <thead class="bg-slate-900 text-white">
+            <tr>
+              <th class="px-6 py-3 text-left font-semibold">Employee ID</th>
+              <th class="px-6 py-3 text-left font-semibold">Full Name</th>
+              <th class="px-6 py-3 text-left font-semibold">Username</th>
+              <th class="px-6 py-3 text-left font-semibold">Email</th>
+              <th class="px-6 py-3 text-left font-semibold">Role</th>
+              <th class="px-6 py-3 text-left font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for employee in employees %}
+            <tr class="border-b border-slate-200 hover:bg-slate-50 transition">
+              <td class="px-6 py-4 font-medium text-slate-800">{{ employee.employee_id }}</td>
+              <td class="px-6 py-4 text-slate-700">
+                {% if employee.user.first_name %}
+                  {{ employee.user.first_name }}
+                {% else %}
+                  {{ employee.user.username }}
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 text-slate-700">{{ employee.user.username }}</td>
+              <td class="px-6 py-4 text-slate-700">{{ employee.user.email }}</td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1  font-semibold
+                  {% if employee.role == 'admin' %} bg-purple-100 text-purple-800
+                  {% elif employee.role == 'sales_attendant' %} bg-blue-100 text-blue-800
+                  {% elif employee.role == 'store_manager' %} bg-green-100 text-green-800
+                  {% else %} bg-gray-100 text-gray-700 {% endif %}">
+                  {{ employee.role }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex gap-2">
+                  <a href="{% url 'view_employee' employee.id %}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm">View</a>
+                  <a href="{% url 'update_employee' employee.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-sm">Update</a>
+                  <a href="{% url 'delete_employee' employee.id %}" onclick="return confirm('Are you sure you want to delete this employee?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="px-6 py-12 text-center text-slate-500">No employees found. Click "Add Employee" to register one.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

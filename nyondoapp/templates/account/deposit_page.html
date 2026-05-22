@@ -9,14 +9,68 @@
       rel="stylesheet"
     />
   </head>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .navbar-custom {
+      background: white;
+
+      padding: 20px;
+    }
+
+    .table-container {
+      background: white;
+
+      padding: 20px;
+    }
+
+    .btn-custom {
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 500;
+    }
+
+    h3,
+    h4 {
+      font-weight: bold;
+    }
+
+    .table thead th {
+      vertical-align: middle;
+    }
+  </style>
   <body>
     <div class="container mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary">NYONDOSTOCK</h1>
-        <a href="{% url 'customer_deposit' %}" class="btn btn-primary"
-          >+ New Deposit</a
-        >
-      </div>
+      <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+        <div class="container-fluid">
+          <!-- LEFT -->
+          <h3 class="mb-0">NyondoStock</h3>
+
+          <!-- RIGHT -->
+          <div class="d-flex gap-2 ms-auto">
+            <a
+              href="{% url 'customer_deposit' %}"
+              class="btn btn-primary btn-custom"
+            >
+              New Deposit
+            </a>
+
+            <a
+              href="{% url 'deposit_page' %}"
+              class="btn btn-success btn-custom"
+            >
+              Deposit Page
+            </a>
+
+            <a href="{% url 'customer_page' %}" class="btn btn-dark btn-custom">
+              Customer Page
+            </a>
+          </div>
+        </div>
+      </nav>
 
       <h4>Deposits Table</h4>
       <div class="table-responsive">
@@ -48,18 +102,19 @@
                   {{ deposit.status }}
                 </span>
               </td>
-              <td>{{ deposit.remaining_balance|floatformat:2 }} </td>
+              <td>{{ deposit.remaining_balance|floatformat:2 }}</td>
               <td>
+                <a href="#" class="btn btn-sm btn-primary">View</a>
                 <a
                   href="{% url 'edit_deposit' deposit.id %}"
-                  class="btn btn-sm btn-warning"
+                  class="btn btn-sm btn-success"
                   >Edit</a
                 >
                 <a
                   href="{% url 'delete_deposit' deposit.id %}"
                   class="btn btn-sm btn-danger"
                   onclick="return confirm('Are you sure?');"
-                  >Print Receipt</a
+                  >Delete</a
                 >
               </td>
             </tr>
@@ -70,6 +125,9 @@
             {% endfor %}
           </tbody>
         </table>
+      </div>
+      <div class="buttons d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'dash' %}" class="btn btn-secondary px-4">Back</a>
       </div>
     </div>
 
